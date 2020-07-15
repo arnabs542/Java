@@ -12,7 +12,8 @@ import java.util.PriorityQueue;
  * 	Dijkstra Algorithm works if the weight is all non-negative values.
  * 
  * 	The idea is to perform a breadth first search on the node, and record the cost to get from source node to its adjacent nodes into a
- * 	table. Initially, all the costs to travel to the other nodes are initialized at a very large number (possibly infinity). When we saw the cost
+ * 	table. Meaning, we would record all the minimum cost to travel to all the nodes, until we've reached at the target node.
+ *  Initially, all the costs to travel to the other nodes are initialized at a very large number (possibly infinity). When we saw the cost
  * 	to travel to this node was actually cheaper than the recorded cost (initially infinity), we'll replace it (and possibly record the parent node
  * 	so that we can trace back the path later)
  * 
@@ -39,16 +40,22 @@ public class Dijkstra_Algorithm {
 			int from = lists[i][0], to = lists[i][1], weight = lists[i][2];
 			adjacent[from].add(to);
 			weights[from].add(weight);
-			//Add the below two lines to enable double directed graph
+			//Add the below two lines to make this a double directed graph
 //			adjacent[to].add(from);
 //			weights[to].add(weight);
 		}
+		//End of construction of graph -----------------------------
+		
 		
 		//The heap will store the explored node in the form [node, price, parent], it will be polled and exploration of adjacent nodes will be performed
+		
+		//Comparator based on the price
 		PriorityQueue<int[]> heap = new PriorityQueue<>(2 * n, (x,y) -> {
 			return x[1] - y[1];
 		});
 		//Tells us the parent of this node which leads to the shortest / cheapest path
+		//The table to tabulate the DP results. Path means the target node, minCost tabulates the minimum cost to travel there, and
+		//parent tabulates where the minimum cost come from (parent node)
 		int[] path = new int[n];
 		int[] minCost = new int[n];
 		boolean[] visited = new boolean[n];
@@ -61,6 +68,7 @@ public class Dijkstra_Algorithm {
 			int[] arr = heap.poll();
 			int node = arr[0], price = arr[1], parent = arr[2];
 			
+			//If the price is found to be cheaper than tabulated one, replace the price and parent
 			if (minCost[node] > price) {
 				minCost[node] = price;
 				path[node] = parent;
