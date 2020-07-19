@@ -23,7 +23,9 @@ package Data_Structures;
  * 	performing operations on it. If the node value was found to be updated from lazy tree, update the value, pass the update to
  * 	child nodes (Through lazy tree), and reset the current node's lazy tree value to 0, meaning it was well updated.
  * 
- * 	
+ * 
+ * 	Note the operation may not always be just adding a constant though. If the segment Tree was for SUM and the values are incremented
+ * 	by a constant, then the SUM of the nodes would be increased by how much elements that node covers (Difference of range + 1), times constant	
  */
 
 //Example implementation of lazy propagating segment tree of type MINIMUM
