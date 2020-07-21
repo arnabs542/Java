@@ -132,7 +132,7 @@ public class Bricks_Game {
 	
 	public static void main(String[]args) {
 		int[] arr = {1,1,10,1,999,1,1,1,999};
-		System.out.println( brickGame(arr) );
+		System.out.println( bricksGame(arr) );
 	}
 	
 }
