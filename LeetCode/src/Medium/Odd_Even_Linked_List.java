@@ -1,6 +1,5 @@
 package Medium;
 
-import Tester.ListNode;
 
 //https://leetcode.com/problems/odd-even-linked-list/
 

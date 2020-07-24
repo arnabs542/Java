@@ -8,7 +8,7 @@ package medium;
  * 		- We can transform a character to UPPER CASE in string a
  * 		- All the lower case characters in string a will be removed
  * 
- * 	Therefore by DP, we divide the problem into subproblems, seperating the original String a and b to start from its prefix (Initially of
+ * 	Therefore by DP, we divide the problem into subproblems, separating the original String a and b to start from its prefix (Initially of
  * 	empty string, then include characters one by one), and try to match a and b
  * 
  * 	Using DP, we will build a A x B size grid, each cell representing whether this matching success or fails, where at cell (x,y), is the
@@ -30,6 +30,9 @@ package medium;
  * 		>	If it doesn't, We could not delete it so the match fails (Only false)
  * 
  * 		
+ *	Optimization: Since in DP we only use the last row's information, we could just keep 2 rows and alternate using each other. This
+ *	saves the space complexity to just about O(2b)
+ *
  */
 
 public class Abbreviation {
