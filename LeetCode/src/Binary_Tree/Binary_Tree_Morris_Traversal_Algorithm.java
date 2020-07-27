@@ -1,9 +1,7 @@
-package Data_Structures;
+package Binary_Tree;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import Binary_Tree.TreeNode;
 
 /*
  * 	Talking about Binary tree traversal methods, there are a few types of it and can be implemented in either recursively or iteratively
@@ -33,34 +31,8 @@ import Binary_Tree.TreeNode;
  * 			we know that we've fully explore the left subtree, and so we destroy the link, and continue explore the right subtree.
  * 
  * 
- * 
- * 	Note about Post Order Traversal
- * 		>	Since post order traversal follows the pattern: ( Left > Right > Root)
- * 		>	Notice if I reverse the order, it becomes ( Root > Right > Left), which is just Pre order Mirrored.
- * 		> 	If the topological order isn't cared (Must process stuff following the order), then we could just perform a mirrored Pre order Morris Traversal,
- * 			and always push the result in the first index of the resulting list
- * 
  */
 
-//TREENODE CLASS ------------------ //
-class TreeNode {
-	int val;
-	TreeNode left;
-	TreeNode right;
-
-	TreeNode() {
-	}
-
-	TreeNode(int val) {
-		this.val = val;
-	}
-
-	TreeNode(int val, TreeNode left, TreeNode right) {
-		this.val = val;
-		this.left = left;
-		this.right = right;
-	}
-}
 //--------------------------------//
 
 public class Binary_Tree_Morris_Traversal_Algorithm {
@@ -124,25 +96,6 @@ public class Binary_Tree_Morris_Traversal_Algorithm {
 		System.out.println();
 	}
 	
-	private static TreeNode findPredecessor(TreeNode node) {
-		//When this function is called, it must mean the node has a left node. We start from the node's left, and keep looking right node
-		TreeNode curr = node.left;
-		
-		//While the node's right is not null, or it doesn't point back to the origin node (Which means the link back to node has been found before)
-		while (curr.right != null && curr.right != node) {
-			curr = curr.right;
-		}
-		
-		//Return the predecessor, which is the rightmost node of the left subtree of parent. It may already have the link established, which requires checking
-		//in the calling function
-		return curr;
-	}
-	
-	
-	//--------------------------------------------------------------------------------------------
-	//POSTORDER TRAVERSAL USING REVERSED, MIRRORED PRE ORDER TRAVERSAL ---------------------------
-	//--------------------------------------------------------------------------------------------
-	
 	public static List<Integer> morrisPostorderTraversal(TreeNode root) {
 		List<Integer> li = new LinkedList<>();
 		
@@ -174,7 +127,7 @@ public class Binary_Tree_Morris_Traversal_Algorithm {
 		return li;
 	}
 	
-	//The helper, mirrored findPredecessor method, which find the leftmost node of right subtree
+	
 	private static TreeNode findRightPredecessor(TreeNode node) {
 		TreeNode curr = node.right;
 		
@@ -185,15 +138,23 @@ public class Binary_Tree_Morris_Traversal_Algorithm {
 		return curr;
 	}
 	
-	
-	
-	public static void main(String[]args) {
-		Integer[] arr = {1,2,3,5,7,null, 1};
+	private static TreeNode findPredecessor(TreeNode node) {
+		//When this function is called, it must mean the node has a left node. We start from the node's left, and keep looking right node
+		TreeNode curr = node.left;
 		
-		TreeNode root = Binary_Tree_Generator.generate(arr);
+		//While the node's right is not null, or it doesn't point back to the origin node (Which means the link back to node has been found before)
+		while (curr.right != null && curr.right != node) {
+			curr = curr.right;
+		}
 		
-		morrisInorderTraversal( root);
-		morrisPreorderTraversal( root );
+		//Return the predecessor, which is the rightmost node of the left subtree of parent. It may already have the link established, which requires checking
+		//in the calling function
+		return curr;
 	}
+	
+	
+	
+	
+	
 	
 }
