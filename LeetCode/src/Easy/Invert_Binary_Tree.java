@@ -13,19 +13,6 @@ import java.util.Stack;
  * 	Notice we does not need to do this from bottom up. Doing it top to bottom will result in same answer!
  */
 
-class TreeNode {
-	int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode() {}
-    TreeNode(int val) { this.val = val; }
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
-
 public class Invert_Binary_Tree {
 	
 	//Recursive method//
