@@ -4,9 +4,9 @@ package Algorithms;
 
 /*
  * 	Kadane's Algorithm is an algorithm of Dynamic Programming(DP) to tackle the problem of maximum sum of continuous sub-array in an array
- * 	Eg: [1, -3, 2, 1, -1], the maximum subarray is [2, 1], thus expected output would be 2+1 = 3
+ * 	Eg: [1, -3, 2, 1, -1], the maximum sub array is [2, 1], thus expected output would be 2+1 = 3
  * 
- * 	To approach this dynamically, we need to realise at any index i, the maximum can only be the element at index i itself, or the combination
+ * 	To approach this dynamically, we need to realize at any index i, the maximum can only be the element at index i itself, or the combination
  * 	of the previous maximum and this element at index i.
  * 	This opens up a way to solve the question in only using O(n) linear time since it iterates through the array 1 time only
  * 
