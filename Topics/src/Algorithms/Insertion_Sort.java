@@ -9,8 +9,15 @@ package Algorithms;
  * 	
  * 	This procedure continues as third element, fourth element and so on until the last element. We're basically trying to insert an element
  * 	one by one into the sorted array segment, hence the name Insertion sort
+ * 
+ * 	Eg: 1,3,5,8 (4) <- New element to insert, is stored in temp variable
  * 	
- * Every time the checked element is lesser than the previous one, all the previous elements greater than the current element is shifted,
+ * 	First iteration	:	1,3,5,_,8			(As long as the element before the empty space is greater than element to insert, then shift the left element
+ * 	Second iteration:	1,3,_,5,8
+ * 	Third iteration :	1,3,(4),5,8			<- 4 Settles in because the element before the empty space, 3 is lesser than 4
+ * 	
+ * 	
+ * 	Every time the checked element is lesser than the previous one, all the previous elements greater than the current element is shifted,
  * 	until a lesser element is met which the current element will be inserted in front of that element
  */
 
