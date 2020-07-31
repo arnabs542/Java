@@ -3,7 +3,6 @@ package Data_Structures;
 import java.util.LinkedList;
 import java.util.List;
 
-import Binary_Tree.TreeNode;
 
 /*
  * 	Talking about Binary tree traversal methods, there are a few types of it and can be implemented in either recursively or iteratively

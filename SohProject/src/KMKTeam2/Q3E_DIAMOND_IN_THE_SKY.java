@@ -1,4 +1,4 @@
-//package KMKTeam2;
+package KMKTeam2;
 
 import java.util.Scanner;
 public class Q3E_DIAMOND_IN_THE_SKY {

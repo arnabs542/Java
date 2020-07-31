@@ -1,4 +1,4 @@
-//package KMKTeam2;
+package KMKTeam2;
 
 import java.util.*;
 public class Q4D_6_SIDED_DIE_ROLL {

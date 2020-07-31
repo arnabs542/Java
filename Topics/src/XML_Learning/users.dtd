@@ -1,0 +1,25 @@
+
+<!-- Using + sign to indicate one or more (user) -->
+<!ELEMENT users (user+) >
+	<!-- Indicate the elements that will be in user element. The later DTD must also
+		be defined in same order -->
+	<!ELEMENT user (name, username, email, address, phone, website, company) >
+	<!-- Using !ATTLIST to indicate an attribute, and #REQUIRED means compulsory -->
+	<!ATTLIST user id ID #REQUIRED >
+		<!ELEMENT name (#PCDATA) >
+		<!ELEMENT username (#PCDATA) >
+		<!ELEMENT email (#PCDATA) >
+		<!ELEMENT address (street, suite, city, zipcode, geo) >
+			<!ELEMENT street (#PCDATA) >
+			<!ELEMENT suite (#PCDATA) >
+			<!ELEMENT city (#PCDATA) >
+			<!ELEMENT zipcode (#PCDATA) >
+			<!ELEMENT geo (lat,lng) >
+				<!ELEMENT lat (#PCDATA) >
+				<!ELEMENT lng (#PCDATA) >
+			<!ELEMENT phone (#PCDATA) >
+			<!ELEMENT website (#PCDATA) >
+			<!ELEMENT company (compname, catchPhrase, bs) >
+				<!ELEMENT compname (#PCDATA) >
+				<!ELEMENT catchPhrase (#PCDATA) >
+				<!ELEMENT bs (#PCDATA) >

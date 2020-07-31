@@ -1,4 +1,4 @@
-//package KMKTeam2;
+package KMKTeam2;
 
 import java.util.Scanner;
 public class Q5I_PIG_LATIN {

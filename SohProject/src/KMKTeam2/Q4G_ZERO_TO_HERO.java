@@ -1,4 +1,4 @@
-//package KMKTeam2;
+package KMKTeam2;
 
 import java.util.Scanner;
 public class Q4G_ZERO_TO_HERO {

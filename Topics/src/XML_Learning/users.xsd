@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	xmlns:xs creates a namespace prefix 'xs' which refers to the XSD website
+	
+	targetNamespace is the DEFAULT namespace that should be defined in the XML docuemnt
+	xmlns sets the default namespace
+	elementFormDefualt means that all the elements must be namespace qualified (Matching namespace), else it will throw validation error
+ -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="localhost" 						
+	xmlns="localhost" 
+	elementFormDefault="qualified">
+
+	<xs:element name='users'>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name='user' type='user' maxOccurs='unbounded' />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name='user'>
+		<xs:sequence>
+			<xs:element name='name' type='xs:string' />
+			<xs:element name='username' type='xs:string' />
+			<xs:element name='email' type='xs:string' />
+			<xs:element name='address' type='address' />
+			<xs:element name='phone' type='xs:string' />
+			<xs:element name='website' type='xs:string' />
+			<xs:element name='company' type='company' />
+		</xs:sequence>
+		<xs:attribute name='id' type="xs:ID" />
+	</xs:complexType>
+
+	<xs:complexType name='address'>
+		<xs:sequence>
+			<xs:element name='street' type='xs:string' />
+			<xs:element name='suite' type='xs:string' />
+			<xs:element name='city' type='xs:string' />
+			<xs:element name='zipcode' type='xs:string' />
+			<xs:element name='geo'>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name='lat' type='xs:decimal' />
+						<xs:element name='lng' type='xs:decimal' />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name='company'>
+		<xs:sequence>
+			<xs:element name='compname' type='xs:string' />
+			<xs:element name='catchPhrase' type='xs:string' />
+			<xs:element name='bs' type='xs:string' />
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+</xs:schema>
