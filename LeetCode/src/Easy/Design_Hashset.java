@@ -1,54 +1,14 @@
-package Data_Structures;
+package Easy;
+
+
+//https://leetcode.com/problems/design-hashset/
 
 /*
- * 	A Binary search tree is a tree with each parent having no more than 2 children (at most 2, thats why called binary)
- * 	and ordered in a manner such that the left child is always less than the parent, and the right child is always greater than 
- * 	parent
- * 			(Kind of like ascending order from left to right) -------> greater
- * 
- * 	The basis of implementing a binary search tree is with a node that possess the attributes:
- * 		-left child
- * 		-right child
- * 		-data that it stores
- * 
- * 	Watch out for unbalanced binary search tree: Eg: root is 1, which any data would end up on the right of the tree.
- * 
- * 	Notes: To handle duplicates, either set a default position, like All duplicates goes to the right/left, OR:
- * 		   implement a counter in the node which counts the number of duplicates in the tree
- * 		   In the below implementation, I set it so it doesn't allow duplicates
- * 
- * 	The most complex operation on the binary search tree is deletion. It will be split into 3 cases:
- * 		>	Deletion node has no subtree
- * 		>	Deletion node has either left or right subtree
- * 		>	Deletion node has both left or right subtree (Most complex)
- * 
- * 		For case 1: Deletion node has no subtree
- * 			This is easiest. Since it has no subtree, we can just disconnect it from the parent node
- * 
- * 		For case 2: Deletion node has either left or right subtree
- * 			We need to connect the deletion node's left or right subtree directly to its parent. This won't effect the order of the
- * 			BST.
- * 
- * 		For case 3: Deletion node has both left and right subtree
- * 			We can't just straight connect any of subtree to the parent. It disrupts the natural order property of BST.
- * 			We have to find a 'successor'. For this, we can choose either of the two values:
- * 
- * 				> The closest, larger value compared to deletion node (Smallest difference between values)
- * 				  This is found at the right subtree's leftmost node
- * 				> The closest, smaller value compared to deletion node (Smallest difference between values)
- * 				  This is found at the left subtree's rightmost node
- * 
- * 			We call this node 'replacement node'. Then, we would have to copy the contents of the replacement node into the
- * 			deletion node itself, and delete the original replacement node from left or right subtree
- * 			By selecting the closest value to the deletion node, we will not disrupt the natural property of BST itself
- * 			
- * 			Notice that since the replacement node is the leftmost or rightmost node in the tree, deleting it will just end up in
- * 			Case 1 or case 2, that is - No subtree or only 1 subtree. Deleting it will be easy
- * 
- *	
+ * 	HashSet can be implemented in various ways.
  */
 
-public class BinarySearchTree {
+
+class BinarySearchTree {
 	
 	private TreeNode root = null;
 	
@@ -184,32 +144,47 @@ public class BinarySearchTree {
 		}
 		return curr.val;
 	}
+}
+
+public class Design_Hashset {
 	
-	
-	
-	public static void main(String[]args) {
-		BinarySearchTree tree = new BinarySearchTree();
-		
-		for (int i = 10; i < 20; i += 3 ) {
-			tree.add(i);
-		}
-		for (int i = 0; i < 10; i += 2 ) {
-			tree.add(i);
-		}
-		for (int i = 1; i < 10; i += 2) {
-			tree.add(i);
-		}
-		
-		
-		for (int i = -5; i < 0; i ++ ) {
-			System.out.println(i + " " + tree.delete(i) );
-		}
-		
-		for (int i = 0; i < 20; i ++ ) {
-			System.out.println(i + " " + tree.search(i) );
-		}
-		
-	}
-	
+	BinarySearchTree[] store;
+
+	 /** Initialize your data structure here. */
+    public Design_Hashset() {
+        store = new BinarySearchTree[1000];
+    }
+    
+    public void add(int key) {
+        int idx = hashfunc(key);
+        if (store[idx] == null ) store[idx] = new BinarySearchTree();
+        
+        store[idx].add(key);
+    }
+    
+    public void remove(int key) {
+        int idx = hashfunc(key);
+        if (store[idx] == null) return;
+        store[idx].delete(key);
+    }
+    
+    /** Returns true if this set contains the specified element */
+    public boolean contains(int key) {
+        int idx = hashfunc(key);
+        if (store[idx] == null) return false;
+        return store[idx].search(key);
+    }
+    
+    private int hashfunc(int val) {
+    	return val % store.length;
+    }
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * MyHashSet obj = new MyHashSet();
+ * obj.add(key);
+ * obj.remove(key);
+ * boolean param_3 = obj.contains(key);
+ */
 	
 }
