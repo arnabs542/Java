@@ -53,8 +53,8 @@ public class Dijkstra_Algorithm {
 		PriorityQueue<int[]> heap = new PriorityQueue<>(2 * n, (x,y) -> {
 			return x[1] - y[1];
 		});
-		//Tells us the parent of this node which leads to the shortest / cheapest path
-		//The table to tabulate the DP results. Path means the target node, minCost tabulates the minimum cost to travel there, and
+		//path - Tells us the parent of this node which leads to the shortest / cheapest path
+		//minCost - The table to tabulate the DP results. Path means the target node, minCost tabulates the minimum cost to travel there, and
 		//parent tabulates where the minimum cost come from (parent node)
 		int[] path = new int[n];
 		int[] minCost = new int[n];
