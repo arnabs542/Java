@@ -1,24 +1,41 @@
 package Algorithms;
 
 /*
- * 	The insertion sort is almost similar to selection sort, but a little more efficient.
- * 	First iterating from second element (index 1), it checks whether the element at index 0 is greater.
- * 		YES - second element is stored in a temp variable, first element is shifted down to index 1, and index 0 is where the temp variable
- * 			  settles down (second element)
- * 		NO - everything is in place, do not touch and continue the iteration
- * 	
- * 	This procedure continues as third element, fourth element and so on until the last element. We're basically trying to insert an element
- * 	one by one into the sorted array segment, hence the name Insertion sort
+ * 	Insertion sort is a simple sorting algorithm, similar to how we sort our deck of cards
  * 
- * 	Eg: 1,3,5,8 (4) <- New element to insert, is stored in temp variable
+ * 	We will go through each element except the first element, starting from element 2 (Index 1)
+ * 
+ * 	For each element, we will be checking the previous element (Element at behind), see if it is greater than the current element
+ * 	we are holding.
  * 	
- * 	First iteration	:	1,3,5,_,8			(As long as the element before the empty space is greater than element to insert, then shift the left element
- * 	Second iteration:	1,3,_,5,8
- * 	Third iteration :	1,3,(4),5,8			<- 4 Settles in because the element before the empty space, 3 is lesser than 4
+ * 	IF it is greater, then move the previous element to the current place, essentially shifting it forward.
+ * 	Then we need to move the pointer backwards. Keep checking if the previous element is greater or not.
+ * 	IF it is lesser, then we insert the value into the index!
+ * 
+ *  In Arrays implementation, this is like shifting. We store the selected element in the temp variable first. If the previous element
+ * 	is greater, shift it forward, overwriting the original element's place, keep doing this until we've met the suitable place
+ * 	where previous element is lesser than the value we're holding, then we INSERT it, hence the name INSERTION SORT
+ * 
+ * 							  V
+ * 	Eg: In the array [1,3,5,7,2], Assume now we are selecting the last element (2) to sort:
+ * 																						     V
+ * 	>	First we store 2 in a temp variable. The pointer is now at index 4 (Last)	[1,3,5,7,2]
+ * 																					   V 
+ * 	>	Since prev element is greater (7), shift it and decrement pointer ====>	[1,3,5,7,7]	(We copied prev element into current place)
+ * 																				    V
+ * 	>	Since prev element is greater (5), shift it and decrement pointer ===> [1,3,5,5,7] 
+ * 																				  V
+ * 	>	Since prev element is greater (3), shift it and decrement pointer ===> [1,3,3,5,7]
+ * 																					    V
+ * 	>	Now prev element (1) is lesser. We insert the temp value into the index ===> [1,2,3,5,7]
+ * 
+ * 
+ * 	Time complexity is O(N^2). FOr each element, we might need to shift until the beginning of array
  * 	
- * 	
- * 	Every time the checked element is lesser than the previous one, all the previous elements greater than the current element is shifted,
- * 	until a lesser element is met which the current element will be inserted in front of that element
+ * 
+ * 
+ * 	Note:	This can be also implemented in linked list.
+ * 		
  */
 
 public class Insertion_Sort {
