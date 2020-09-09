@@ -21,7 +21,7 @@ import java.util.List;
  * 		>	If it however has a left subtree, then the left subtree must be visited first than the right subtree, and we need a way to come back to this node later
  * 			(To get the right subtree)
  * 		>	So the question is, how are we going to return to this node without having to record it in data structure? The key is to realize WHEN we will be
- * 			needed to come back to this node
+ * 			needed to come back to this node?
  * 					The answer is within the left subtree of this node, after visiting the rightmost node
  * 
  * 		>	Therefore we could create a function to obtain the rightmost node (Call predecessor) of the left subtree of this node, and link that node's right back 
