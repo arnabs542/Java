@@ -22,7 +22,7 @@ package Algorithms;
  *
  *	s : the distance of the straight part, in this case it is from 1 to 3.
  *	k : the distance in the cycle from the beginning of cycle (cycle begins at 3), where the two pointers will meet. In this case the pointers
- *		will meet at node 6, therefore k will be distance from 3 to 6.
+ *		will meet at node 7, therefore k will be distance from 3 to 7. 
  * 	l : the cycle's length, which is distance from 3 until back to itself, passing through 5 nodes
  *	
  *	Now, we consider the distances that both pointer covered until they meet each other.
