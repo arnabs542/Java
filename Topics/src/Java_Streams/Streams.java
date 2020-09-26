@@ -58,7 +58,7 @@ public class Streams {
 			.forEach(System.out::println);	//Terminal: apply println to all of the integers
 	}
 	
-	static void example2 () {
+	static void example2 () {ygu
 		IntStream
 			.range(1, 50)	//Source: range of integers from 1 to 49
 			.skip(25)		//Intermediate: Skip over first 25 iterations of the stream, returns the stream of remaining elements, therefore start from 26
