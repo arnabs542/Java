@@ -20,6 +20,10 @@ public class ConstructBinarySearchTreeFromPreorderTransversal {
 	          this.right = right;
 	      }
 	}
+
+	// This above ^^ approach is the most simplistic of insert function, but would take O(n2) if the 
+	// tree is uneven, or skewed to one side only. What it does is create a binary tree, and keep 
+	// calling insert() function one by one
 	
 //	public TreeNode bstFromPreorder(int[] preorder) {
 //		if (preorder.length == 0) return null;
@@ -43,7 +47,6 @@ public class ConstructBinarySearchTreeFromPreorderTransversal {
 //		}
 //	}
 	
-	// This approach is the most simplistic of insert function, but would take O(n2) if the tree is uneven, or skewed to one side only
 
 	/*
 	 * 	Instead, this approach keeps track of the current node it is processing. Everytime a new node is inserted, the current variable is set
