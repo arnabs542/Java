@@ -2,6 +2,7 @@ package Medium;
 
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 //https://leetcode.com/problems/asteroid-collision/
 
