@@ -5,6 +5,24 @@ import java.util.Stack;
 
 //https://leetcode.com/problems/range-sum-of-bst/
 
+/*
+*   This is a BST traversal problem, which is easily solved using recursion or any iteration method of Stack or Queue
+* 
+*   At each recursion call, we receive a node. Since we know the left and right boundaries, we check:
+*   If the node's value is in range, this node value must be included in sum.
+*   Then, we know left subtree all values must be less than this node value, and reverse for right subtree.
+* 
+*   If the left boundary is still lower than the node value, then some node in left subtree may be valid node. Recurse
+*   left
+*   If the right boundary is still higher than the node value, then some node in right subtree may be valid node.
+*   Recurse right
+* 
+*   ================================================================
+* 
+*   The very same can be done iteratively, usign Stack (DFS) or Queue (BFS)
+* 
+*/
+
 public class Range_Sum_of_BST {
 
 	public class TreeNode {
