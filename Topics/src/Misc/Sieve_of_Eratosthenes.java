@@ -1,6 +1,9 @@
 package Misc;
 
 /*
+ * The best 'brute force' prime determining algorithm takes O(N sqrt(N) ) time. Is there a way to improve?
+ * 
+ * 	
  * Sieve of Eraosthenes is an algorithm to find prime numbers up to specified n. It was invented around 200BC meaning it is around 2200 years old
  * 
  * It works by first having a boolean to mark the eliminated number first. THen we will start looping from 2 up to n.
@@ -11,6 +14,20 @@ package Misc;
  */
 
 public class Sieve_of_Eratosthenes {
+	
+	//	The optimized 'brute' prime determination algorithm
+	private static boolean isPrime(int n) {
+		if (n < 2) return false;
+		if (n == 2 || n == 3) return true;
+		if (n % 2 == 0 || n % 3 == 0) return false;
+		
+		long sqrtN = (long)(Math.sqrt(n) + 1);
+		for (long tester = 6; tester <= sqrtN; tester += 6) {
+			if (n % (tester - 1) == 0 || n % (tester + 1) == 0 ) return false;
+		}
+		
+		return true;
+	}
 	
 	static void printPrimes(int limit) {
 		boolean[] eliminate = new boolean[limit + 1];
