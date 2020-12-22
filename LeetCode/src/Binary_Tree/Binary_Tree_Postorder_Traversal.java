@@ -47,11 +47,13 @@ import java.util.Stack;
  * 	One stack method is the most challenging to come up with a solution with. It requires the following strategy:
  * 		>	Keep adding the node into the stack, and traversing into the left subtree.
  * 		>	Eventually we will reach at the null, and the stack top is the last node of left subtree.
- * 		>	When that occurs, we will see if that node has a right subtree. If it does, set pointer to the right
- * 			subtree and repeat above steps.
- * 		>	If the node has no right subtree, the node is ready to be recorded. Record the node. Then, we check if 
- * 			this node is the previous node's right. If it is, this means we have successfully explored the right subtree
- * 			of parent node. Parent node can be popped and recorded. This repeats until condition above is false.
+ * 		>	When that occurs, we will see (peek) if that node has a right subtree. If it does, set pointer to its right
+ * 			subtree and repeat above steps, without popping the peeked node
+ * 		>	We will have a last pointer which also points to the LAST NODE RECORDED. In above step when the node is
+ * 			peeked, also check if the last node is the peeked node's right. If it does, that means although the peeked
+ *			node has a right subtree, the right subtree had already been fully explored.
+ *			In both cases, the peeked node can be popped and recorded. Remember to set the last node as the popped node,
+ *			and set current node as null so next iteration will pop node from Stack.
  */
 
 public class Binary_Tree_Postorder_Traversal {
@@ -109,6 +111,7 @@ public class Binary_Tree_Postorder_Traversal {
 		List<Integer> li = new ArrayList<>();
 		Deque<TreeNode> stack = new ArrayDeque<>();
 		TreeNode curr = root;
+		TreeNode last = null;
 		
 		//	Iterate as long as the current is not null, or the stack is not empty
 		while ( curr != null || !stack.isEmpty() ) {
@@ -120,23 +123,17 @@ public class Binary_Tree_Postorder_Traversal {
 			//	Otherwise current is null, we may have reached max depth of one left subtree.
 			else {
 				//	Check the previous node if it has a right subtree
-				TreeNode temp = stack.peek().right;
+				curr = stack.peek();
 				//	No right subtree. It is time to print this node out
-				if (temp == null) {
-					temp = stack.pop();
-					li.add( temp.val );
-					
-					//	While the temp node is the parent node's right, it means we have successfully traversed
-					//	parent node's right subtree and we are pointing at it. Print this node out, and go back to parent
-					//	node.
-					while ( !stack.isEmpty() && temp == stack.peek().right ) {
-						temp = stack.pop();
-						li.add( temp.val );
-					}
+				if (curr.right == null || last == curr.right) {
+					stack.pop();
+					li.add( curr.val );
+					last = curr;
+					curr = null;
 				} 
 				//	Previous node has a right subtree! Go traverse the right subtree before this parent node!
 				else {
-					curr = temp;
+					curr = curr.right;
 				}
 			}
 		}
