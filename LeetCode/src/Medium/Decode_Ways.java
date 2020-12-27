@@ -9,7 +9,7 @@ package Medium;
  *			>	Case "111": 3
  *			>	Case "1111": 5
  *			>	Case "11111": 8
- *	This is FIBONACCI SEQUENCE!
+ *	This is FIBONACCI SEQUENCE ------- Dynamic Programming
  *
  *	-------------------------------------------------------
  *
