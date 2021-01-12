@@ -25,6 +25,8 @@ import java.util.PriorityQueue;
  * 
  * 	There are 2 algorithms for this: Prim's Algorithm and Kruskal's Algorithm
  * 
+ * 	-----------------------------------------
+ * 	
  * 	For Prim's algorithm, we start out from a starting node. We first explore the starting node's connected nodes, and add
  * 	them to a MIN HEAP.
  * 	Now, after fully explored, we will be polling from the heap. The polled edge will always be the smallest (Due to MIN HEAP).
@@ -32,7 +34,22 @@ import java.util.PriorityQueue;
  * 	If it does, then we will choose to form this edge, and continue on with the node exploration
  * 
  * 	Prims algorithm follows BFS, with also GREEDY Method for edge selecting, which requires usage of a MIN HEAP
+ * 	Using Prim's algorithm, a tree is always maintained without having a far away edge to be selected. The implementation
+ * 	is done using Queues and Min Heap.
  * 
+ * 	Eg:
+ * 			(1)
+ * 		  5	/ \ 2
+ * 		  (2)-(3)
+ * 			 3
+ * 
+ * 	Say we start BFS at (1). Explore (1). Edges of 5 and 2 are added to the min heap. Since 2 is smallest, 2 is popped,
+ * 	and an connection from (1)-(3) is formed. 
+ * 	
+ * 	(3) is established so explore (3). We discover Edge of weight 3. Push into heap. Now heap contains 3 and 5, and 3
+ * 	is smaller so it is popped.
+ * 
+ * 	The MST is formed as edges popped is now N-1. Total cost is 2+3 = 5
  */
 
 public class Prims_Algorithm {
