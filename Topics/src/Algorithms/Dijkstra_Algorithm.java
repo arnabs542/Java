@@ -6,19 +6,31 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 /*
- * 	Given a directed or non-directed graph with weights. We can think of the weights as the distance or cost to travel from one node to another.
- * 	Find the shortest distance to travel from a single source to another destination node. Or maybe, I want to know the minimum cost to travel from
- * 	single source to ALL of the other nodes. 
- * 	Dijkstra Algorithm works if the weight is all non-negative values.
+ * 	Given a directed or non-directed graph with weights. We can think of the weights as the distance or cost to travel 
+ * 	from one node to another.
+ * 	
+ * 	Find the shortest distance to travel from a single source to another destination node. Or maybe, I want to know 
+ * 	the minimum cost to travel from single source to ALL of the other nodes. 
+ * 	
+ * 	Dijkstra Algorithm works if the weight is ALL NON-NEGATIVE VALUES. In case of graph involving negative edges,
+ * 	it may or may not work!
  * 
- * 	The idea is to perform a breadth first search on the node, and record the cost to get from source node to its adjacent nodes into a
- * 	table. Meaning, we would record all the minimum cost to travel to all the nodes, until we've reached at the target node.
- *  Initially, all the costs to travel to the other nodes are initialized at a very large number (possibly infinity). When we saw the cost
- * 	to travel to this node was actually cheaper than the recorded cost (initially infinity), we'll replace it (and possibly record the parent node
- * 	so that we can trace back the path later)
+ * 	The idea is to perform a breadth first search on the starting node, and record the cost to get from source node 
+ * 	to its adjacent nodes into a table. Meaning, we would record all the minimum cost to travel to all the nodes, 
+ * 	until we've reached at the target node or fully visited the whole graph
+ * 	
+ *  Initially, all the costs to travel to the other nodes are initialized at a very large number (possibly infinity).
+ *  When we saw the cost to travel to this node was actually cheaper than the recorded cost (initially infinity), 
+ *  we'll replace it (and possibly record the parent node so that we can trace back the path later)
  * 
- * 	Heap data structure shall be used in Dijkstra algorithm, which arranges the prices in increasing order. That way we'll ensure the exploration are
- * 	always done in an optimal way.
+ * 	Say we have fully explored the starting node and ready to jump into the next node to explore. How do we select
+ * 	the next node? Do we just choose randomly?
+ * 	Dijkstra thinks that when selecting, we should select the one node that has the minimum cost to travel to, from
+ * 	the starting node. Since we are going to the node via starting node, of course greedily, we would always want
+ * 	the cheapest cost to go to the node.
+ * 
+ * 	Therefore, while exploration, instead of a queue, we will use heap to arrange the next layer of nodes to explore
+ * 	which arranges the cost by increasing order.
  */
 
 public class Dijkstra_Algorithm {
