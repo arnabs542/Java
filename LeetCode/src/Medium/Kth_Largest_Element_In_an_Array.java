@@ -19,7 +19,7 @@ import java.util.PriorityQueue;
  * 	The remaining elements in the heap will consists of first K maximum elements. When we are done iteration, the top of the
  * 	heap is immediately our answer.
  * 
- * 	Heap's insertion and heapify is O(log N) therefore taking overall time complexity O(N log N) and space O(K)
+ * 	Heap's insertion and heapify is O(log K) therefore taking overall time complexity O(N log K) and space O(K)
  * 
  * 	--------------------------------------------------------------
  * 
@@ -41,6 +41,7 @@ import java.util.PriorityQueue;
 
 public class Kth_Largest_Element_In_an_Array {
 	
+	//	Simple Sort Solution - Won't get you passed an interview
 	public int findKthLargest(int[] nums, int k) {
 		Arrays.parallelSort(nums);
 		
@@ -48,6 +49,7 @@ public class Kth_Largest_Element_In_an_Array {
 	}
 	
 	
+	//	K-sized heap solution
 	public int findKthLargest2(int[] nums, int k) {
 		PriorityQueue<Integer> heap = new PriorityQueue<>();
 		
@@ -85,8 +87,6 @@ public class Kth_Largest_Element_In_an_Array {
 		//	Else the partitioned index is greater (The one we want to find at left side)
 		return recurse(nums, l, i-1, k);
 	}
-	
-	
 	private void swap(int[] nums, int i, int j) {
 		int temp = nums[i];
 		nums[i] = nums[j];
