@@ -11,8 +11,6 @@ package Easy;
  */
 
 public class Number_of_Steps_to_Reduce_A_Number_To_Zero {
-	
-
 	int numberOfSteps (int num) {
         int res = 0;
         while (num != 0) {
