@@ -50,6 +50,27 @@ import java.util.Map;
  * 		
  * 		Case 4: LIS [1,2,3,4]			- In this case of course it's best to insert 8 into the end of LIS, extending it into a longest LIS so far.
  * 
+ * 
+ * 	Say we have currently [1,2,3,10,20] and we try to insert 8 now. Do we discard the 10 and 20, and array becomes
+ * 	[1,2,3,8]? Definitely not. Consider if after inserting 8, the next element is 30. Then instead of getting
+ * 	[1,2,3,10,20,30], we are left with [1,2,3,8,30] only! The subsequence of [1,2,3,10,20] is lost if we discard easily.
+ * 
+ * 	If we cannot discard, then what do we do? Turns out, once binary search is done on array, the pointer will be right at '10'. Indicating the index
+ *  that 8 shall replace into, and we'll do exactly that!
+ *  >>	[1,2,3,8,20]
+ *  It might seems unintuitive, but the fact that 20 exists, means that there exists a subsequence that ends in 20. In fact,
+ *  right now we are tracking 2 increasing subsequence at once:
+ *  	>	[1,2,3,8]
+ *  	>	[1,2,3,10,20] by the fact that 20 exists. The 10 is replaced because I rather have [1,2,3,8] which increases the
+ *  		chance of next element appending.
+ *  
+ *  So when element '30' comes, binary search points at the end of array. We append the 30 to the array. Although the array
+ *  doesn't represent the actual subsequence [1,2,3,10,20,30] but is [1,2,3,8,20,30], we don't need the actual representation
+ *  of the subsequence itself. The fact that there is a subsequence of length 5 ending with 20 is enough! Even more, the 20
+ *  may even be replaced in the future, by a lower element that is greater than 8 (in updated array)!
+ *  
+ * 
+ * 
  * 	
  * 	We see that we need to keep track of several potential LIS at a time, but notice that at a time, LIS of specific length can only exist one at a time due to
  * 	Case #1. If there is a potential that it can be replaced, it will be replaced.
