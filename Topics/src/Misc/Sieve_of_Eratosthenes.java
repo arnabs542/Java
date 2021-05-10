@@ -10,7 +10,13 @@ package Misc;
  * If the i is already eliminated as shown in the eliminated array, simply continue.
  * Else, it is a prime number! Therefore, we put that into our results.
  * Now, since the multiples of this prime number is not prime, we need to eliminate them, up until n.
- * 	An optimization would be start eliminating from the square of this number, which is i * i. Every loop we'll increment by i
+ * 
+ * An optimization would be start eliminating from the square of this number, which is i * i. Every loop we'll increment by i
+ * Why is this available?
+ * 	
+ * Consider finding out is 5 prime? Yes it is prime. But do we start eliminating from 5x2, 5x3, 5x4...?
+ * No because up until 5, we had already iterated 2,3 and 4. This means previously, we had marked off 2x5, 3x5, 4x5 which
+ * is the exact same thing!
  */
 
 public class Sieve_of_Eratosthenes {
