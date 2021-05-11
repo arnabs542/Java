@@ -1,6 +1,15 @@
 package Medium;
 
 //https://leetcode.com/contest/weekly-contest-186/problems/maximum-points-you-can-obtain-from-cards
+/*
+ * 	This is an array problem
+ * 
+ * 	Since the cards are all positive, I would want to use up all k available moves to get maximum score.
+ * 	However, how many cards from left side and how many from right side is the problem
+ * 
+ * 	Let's try to obtain all cards from left side first. One by one, I will get one card from right side while
+ * 	discarding the leftmost card from left section. Compare the scores to see what maximum score I can get.
+ */
 
 public class Maximum_Points_You_Can_Obtain_from_Cards {
 	
