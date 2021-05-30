@@ -55,17 +55,18 @@ import java.util.Arrays;
 public class Radix_Sort {
 	
 	public static int[] radixSort(int[] arr) {
+		//	To obtain the number of digits of largest magnitude number
 		int max = Integer.MIN_VALUE;
 		for (int i: arr ) {
 			max = Math.max( max, i);
 		}
-		
 		int places = 0;
 		while (max > 0) {
 			places ++;
 			max /= 10;
 		}
 		
+		//	Perform counting sort on each of the places, from smallest onwards
 		for (int i = 1; i <= places; i ++ ) {
 			arr = countingSort(arr, 10, i );
 		}
