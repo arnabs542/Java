@@ -5,7 +5,7 @@ import java.util.List;
 
 //https://leetcode.com/problems/count-of-smaller-numbers-after-self/
 /*
- *  This turns out to be a Merge sort / BST problem
+ *  This turns out to be a Merge sort / BST problem. It is hard, so I have to look at solution XD
  * 	However, only merge sort solution is discussed here as it is guaranteed O(N log N) time.
  * 
  * 	Merge sort, uses divide and conquer strategy with recursion to sort an array. For given range in an array [l,r],
