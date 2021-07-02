@@ -5,7 +5,7 @@ import java.util.List;
 
 //https://leetcode.com/problems/gray-code/
 /*
- * 	This is a Backtracking / Bit Manipulation problem.
+ * 	This is a Bit Manipulation problem.
  * 
  * 	For me, I solved using bit manipulation, which is easier to do because it is the nature of problem.
  * 	At every move, I can toggle a single bit, and I need to do this until i generated a full sequence
