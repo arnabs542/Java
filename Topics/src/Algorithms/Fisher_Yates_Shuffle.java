@@ -4,8 +4,16 @@ import java.util.Arrays;
 
 /*
  * Fisher Yates Algotrithm is a simple shuffling algorithm which is based on swapping of elements in an array
- * Starting from the last index, generate a random number including the last index and swap their contents.
- * There is no need for iteration on index 0 (Since 0 * random is still 0)
+ * Time complexity of this algorithm is O(N) time.
+ * 
+ * This algorithm is derived from the idea of: Given an array of N elements, we put those N elements into a bag. Then from
+ * index 0,1,2... we always draw one element from the bag and place it in the index.
+ * 
+ * Starting from the last index N-1, keep generating a random index of range [0, i] where i is inclusive of the current index.
+ * Then, we swap the element at current index with the one at random index
+ * 
+ * You can see how it is done here: Initially we have bag of N elements. From the last index, we pick from N elements to place it.
+ * Once we placed it, we no longer need to consider element in the last index because the element is chosen.
  * 
  * This is said to be better than using sort with a comparator function of random value (0.5 - random) which is said to have biases... i think?
  */
@@ -15,7 +23,7 @@ public class Fisher_Yates_Shuffle {
 	//Shuffle based on the algorithm itself
 	private static void shuffleFisher(int[] toShuffle) {
 		for (int i = toShuffle.length - 1; i > 0; i -- ) {
-			int j = (int)(i * Math.random() );
+			int j = (int)((i+1) * Math.random() );
 			int temp = toShuffle[i];
 			toShuffle[i] = toShuffle[j];
 			toShuffle[j] = temp;
