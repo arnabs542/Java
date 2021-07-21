@@ -31,6 +31,17 @@ package Medium;
  * 	Else, our current force cannot change the state of that domino. 
  * 	
  * 	Time and space complexity is O(N)
+ * 
+ * ===================================================================================================
+ * 
+ * 	As for two pointers, the core idea is that when we encounter a range of R......L, we initialize the two pointers
+ *	at the leftmost and rightmost, and start filling from it.
+ *
+ *	Once we narrow the possible cases of ranges, it can only be:
+ *	>	R.....L		- Two pointer
+ *	>	L.....L		- Fill all with L
+ *	>	R.....R		- Fill all with R
+ *	>	L.....R		- Remain as it is
  */
 
 public class Push_Dominoes {
