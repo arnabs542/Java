@@ -97,8 +97,6 @@ public class Pseudo_Random_Number_Generators {
 	
 	
 	
-	
-	
 	public static void main(String[] args) {
 		Pseudo_Random_Number_Generators prng = new Pseudo_Random_Number_Generators();
 		
