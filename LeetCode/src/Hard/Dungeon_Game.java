@@ -8,6 +8,11 @@ import java.util.LinkedList;
  * 	A Dynamic Programming question which is easier to spot and realize. The question asks for the minimum health required to reach princess grid.
  * 	Therefore we could see the optimization (min) and can divide into subproblems (What is the min health required to reach princess from this
  * 	grid?)
+ * 
+ * 	** Second time doing this problem thoughts: Well I couldn't come up with solution the second time, because I tried DP from top left corner.
+ * 		This gives a lesson: If I were to brute force, i begin with top left. DP is a bottom up problem, means we should probably start from the
+ * 		destination.
+ * 		Some DP problem are better off start from destination than starting from source.
  * 	
  * 	We would create a new 2D array of same size where each cell represents the min health required to reach princess from this cell. (Actually,
  * 	we could overwrite the original dungeon array as well, which further reduces the space complexity to O(1) )
