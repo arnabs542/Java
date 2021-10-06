@@ -12,7 +12,7 @@ import java.util.HashSet;
  * 	
  * 	If we found a number, we will first check if the number at that position num - 1 is already itself. If not, then just safely swap
  * 	it with the current number.
- * 	Otherwise if the number is already there, then we know this is a duplicate. Add that to hashset or something
+ * 	Otherwise if the number is already there, then we know this is a duplicate. Add that to hashset or something, which takes O(N) space
  * 
  * 	If don't want to use hashset, use two pass method, where first pass is just placing to respective places, ignoring swapping
  *  if the number is already in its respective place
