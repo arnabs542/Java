@@ -16,7 +16,12 @@ package Medium;
  * 	To optimize space, we would just record the used grid in-place using the original board. We mark it with a character that shouldn't be
  * 	in possible values in the board, anything like * % # or space will do.
  * 
- * 	
+ * 	-----------------------------
+ * 
+ * 	The pruning is meant to avoid visiting the same grid twice if we already previously already computed the result and with no result.
+ * 	Say we try to search for the character at index i in the grid[r][c]. If we previously already established that recursion at grid[r][c]
+ * 	with the index i yields no result, then we can pretty much ignore the search already. However recording the result seems to take up extra
+ * 	space - Namely O(r * c * i) where r and c is dimensions of board, and i is the length of word
  */
 
 public class Word_Search {
