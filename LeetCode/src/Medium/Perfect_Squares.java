@@ -1,5 +1,6 @@
 package Medium;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -25,25 +26,21 @@ import java.util.Iterator;
 
 public class Perfect_Squares {
 	
+	// DP solution.
 	public static int numSquares(int n) {
-		//We make the array which store the minimum number of steps to use perfect square number to add up to the index number itself.
-		//Index number 1 represents n = 1, which there is 1 step to add up
-		int[] perfsqr = new int[n + 1];
-		
-		//The number we'll be processing, starting from index 2 which is number 2
-		for (int i = 1; i <= n; i ++ ) {
-			int range = (int)Math.floor( Math.sqrt(i) );
-			int minstep = Integer.MAX_VALUE;
-			
-			for (int j = 1; j <= range; j ++ ) {
-				int result = 1 + perfsqr[i - j * j];
-				minstep = Math.min(minstep, result);
-			}
-			perfsqr[i] = minstep;
-		}
-		
-		return perfsqr[n];
+		int[] dp = new int[n + 1];
+		Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j * j <= i; ++j) {
+                dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
+            }
+        }
+        return dp[n];
 	}
+	
+	
 	
 	public static int numSquaresBST(int n) {
 		HashSet<Integer> set = new HashSet<>();
