@@ -74,52 +74,31 @@ import Binary_Tree.TreeNode;
 
 public class Path_Sum_III {
 
-//	public int pathSum(TreeNode root, int sum) {
-//		return recurse(root, new int[] {}, sum);
-//    }
-//	private int recurse(TreeNode node, int[] sums, int target) {
-//		if (node == null) return 0;
-//		
-//		int total = 0;
-//		int[] next = new int[ sums.length + 1];
-//		
-//		for (int i = 0; i < sums.length; i ++ ) {
-//			next[i] = sums[i] + node.val;
-//			if (next[i] == target) total ++;
-//		}
-//		next[next.length - 1] = node.val;
-//		if (node.val == target) total ++;
-//		
-//		total += recurse(node.left, next, target);
-//		total += recurse(node.right, next, target);
-//		return total;
-//	}
-	
-	//	Recursive function that is used to determine no of paths that leads to target if start the path at this node
-//	public int pathSum(TreeNode root, int sum) {
-//		if (root == null) return 0;
-//		
-//		//	The two pathSum on left and right child means to find no of ways to target if the path starts at children, not current node
-//		return pathSumPassed(root, sum) + pathSum(root.left, sum) + pathSum(root.right, sum);
-//    }
-//	//	Recursive function that is used to determine no of paths that leads to target if use the parent passed value (Not starting node)
-//	private int pathSumPassed(TreeNode node, int sum) {
-//		if (node == null) return 0;
-//		
-//		//	We are using decrementing target here. If the sum can be decremented to 0, then it is a valid path
-//		
-//		//	Note that this recursion is called when the parent is determined. So we just need to find again the path if continue
-//		//	passing the value to two childrens. No need to find if the children started the new path by themselves as that is handled
-//		//	by the pathSum recursive function
-//		return ( node.val == sum? 1: 0) 
-//				+ pathSumPassed(node.left, sum - node.val) + pathSumPassed(node.right, sum - node.val);  
-//	}
-	
+//https://leetcode.com/problems/path-sum-iii/submissions/
+/*
+*	This is a DFS (and kinda backtracking) problem.
+* 
+*	On recursion of every node, we can have a 'queue' kinda data structure that keep track of every node we have encountered along the path.
+*	Then, we can iterate through the path to perform a "Suffix sum" to determine if there is any path that sums up to target, that must end at
+*	current node.
+* 
+*	However, the time complexity of this algorithm goes up to O(ND) where N = number of nodes, D = max depth of tree, worst case O(N^2) if is linear
+* 
+*	---------------------
+* 
+*	(Solution)
+* 
+*	Instead, if we keep a reference (map) to prefix sum -> frequency, what can it do?
+*	A prefix sum keep track of available paths from root node to current node. On recursion, we know the sum from root node to current node.
+*	Now, if we want to know if there is any intermediate paths, we know we have to eliminate some path that starts with root to somewhere, which
+*	we'll look it up in the map in O(1) time.
+* 
+*	The time complexity is thus reduced to O(N).
+*/
+
 	public int pathSum(TreeNode root, int sum) {
 		HashMap<Integer, Integer> prefix = new HashMap<>();
-		
 		prefix.put(0, 1);
-		
 		return recurse(root, 0, sum, prefix);
     }
 	
