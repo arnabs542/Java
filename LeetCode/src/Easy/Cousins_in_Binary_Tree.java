@@ -1,30 +1,30 @@
 package Easy;
+import java.util.ArrayDeque;
+import java.util.Queue;
+
+import Binary_Tree.TreeNode;
 
 //https://leetcode.com/problems/cousins-in-binary-tree/
-//Also don't know how this works. A Depth first search or Breadth First search question
-//Note that this is not a BINARY SEARCH TREE, Just a simple tree (unordered)
+/*
+*	This is a Binary Tree problem.
+* 
+*	Since this problem involves depth, we can use BFS to allow for early termination.
+*	The idea is:
+*		Iterate layer by layer. Once one of x or y is found, we have no reason to go deeper into the layers. This is early termination and is better
+*		as binary tree usually grow exponentially by depth.
+* 
+*	Keep a boolean flag to indicate whether one of x or y is found in the layer. Also keep int variable to reference the parent. Then, For each
+*	node in current layer, check left and right (So we know who is the parent).
+*	
+*	At the end of layer, if only one node is located, then terminate early by returning false, since we know they are already not on the same level.
+*/
 
-
-//class for a TreeNode
-class TreeNode {
-	int val;
-	TreeNode left;
-	TreeNode right;
-	TreeNode() {
-	}
-	TreeNode(int val) {
-		this.val = val;
-	}
-	TreeNode(int val, TreeNode left, TreeNode right) {
-		this.val = val;
-		this.left = left;
-		this.right = right;
-	}
-}
-//end of class TreeNode
 
 
 public class Cousins_in_Binary_Tree {
+	
+	
+	// Naive DFS solution - Search for 2 nodes
 	public boolean isCousins(TreeNode root, int x, int y) {
 		int[] x1 = depthAndParent(root, x);
 		int[] y1 = depthAndParent(root, y);
@@ -59,5 +59,49 @@ public class Cousins_in_Binary_Tree {
 		}
 		return null;
 	}
+	
+	
+	
+	public boolean isCousins2(TreeNode root, int x, int y) {
+		if (root == null || root.val == x || root.val == y) return false;
+		Queue<TreeNode> bfs = new ArrayDeque<>();
+		bfs.add(root);
+
+		boolean isLocated = false;
+		int parent = -1;
+
+		// Note that we don't check root node. This can be checked early if you want.
+		while (!bfs.isEmpty()) {
+			for (int size = bfs.size(); size != 0; --size) {
+				TreeNode node = bfs.poll(); 
+
+				// Left subtree
+				if (node.left != null) {
+					if (node.left.val == x || node.left.val == y) {
+						if (isLocated) return true;
+						isLocated = true;
+						parent = node.val;
+					}
+					bfs.add(node.left);
+				}
+				// Right subtree
+				if (node.right != null) {
+					if (node.right.val == x || node.right.val == y) {
+						// Same parent.
+						if (parent == node.val) return false;
+						if (isLocated) return true;
+						isLocated = true;
+						parent = node.val;
+					}
+					bfs.add(node.right);
+				}
+				
+			}
+			// Located 1 node on this level only, means different depth
+			if (isLocated) return false;
+		}
+		// Iterated whole tree already.
+		return false;
+    }
 	
 }
