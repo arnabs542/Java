@@ -1,112 +1,68 @@
 package Medium;
 
 //https://leetcode.com/problems/reverse-words-in-a-string/
-
 /*
- * 	To reverse words in a string, The most easiest direct solution is to using split with white spaces as delimiter (using regex is better
- * 	since it matches multiple white spaces), then reverse the array returned with seperated spaces.
- * 
- * 	We could use a two pointer techinique. The right pointer and left pointer will wrap at individual words, where right pointer points
- * 	at last character of a word and left pointer points at the starting character of the word. This will utilize the loop where
- * 	right pointer keeps decreasing as long as it does not go out of bound and the right pointer char is white space.
- * 	The left pointer will keep decreasing starting from the right pointer's position as long as the left pointer - 1's character is not
- * 	white space (and of course not out of bound).
- * 	These two pointers will start working from the end of string, and when the pointers had wrapped around a word, it will append the
- * 	substring to the resulting string right at the end, followed by a space.
- * 
- * 	Assuming to do it in place, we will reverse the string (Better to trim it first) by character. Then, find the individual words and perform
- * 	the reversing like above.
- */
+* 	To reverse words in a string, The most easiest direct solution is to using split with white spaces as delimiter (using regex is better
+* 	since it matches multiple white spaces), then reverse the array and joining with seperated spaces.
+*
+*  The problem is still easier if we are allowed to utilize O(N) extra space. What we will do is to construct a new result string, and in the
+*  original string, we locate the boundaries of each word FROM BEHIND (Thus reversing), and appending it to the result string.
+*
+*  ---------------------------------------------------------------
+* 
+*  The hardest part is to do it in-place in languages like C++. To do it in place, first idea that you need to get is:
+*      >   Reverse the whole string, then reverse individual words to achieve what the problem originally want.
+*  Seems easy, but consider multiple spaces to be eliminated. Then it becomes quite more complicated
+*  Example:
+*      "      quick    brown fox jumps     over "
+* 
+*  >   Reverse whole string
+*  >   Keep an index: startIndex, indicating where we will insert our next word, in-place next. The reason for this is because of multiple spaces:
+*      "      a " -> startIndex = 0 means when we encouter the 'a', we will put at index 0.
+*  >   Iterate each character. Once encounter a character:
+*      - Shift it to startIndex.
+*      - Meanwhile, also locate the right boundary
+*  >   Then we essentially have the shifted word at range [startIndex, startIndex+wordLen]. Reverse it.
+* 
+*  >   At the end, discard leftover characters.
+*/
 
 public class Reverse_Words_In_A_String {
 	
 	
-	// Solution assuming that string is mutable and doing it in place O(1) (But actually it isn't)
-	
-//	public static String reverseWords(String s) {
-//		//Use stringbuilder to simulate a mutable string
-//        StringBuilder sb = new StringBuilder( s.trim() );
-//        int len = sb.length();
-//        
-//        //Reverse the whole string
-//        for (int i = 0; i < len / 2; i ++ ) {
-//        	char temp = sb.charAt(i);
-//        	sb.setCharAt(i, sb.charAt(len - i - 1) );
-//        	sb.setCharAt(len - i - 1, temp);
-//        }
-//        
-//        
-//        int left = 0, right = 0;
-//        
-//        //Reverse each individual words.
-//        while (left < len) {
-//        	//Initialize the left to the first character of the individual word
-//        	while (sb.charAt(left) == ' ' && left + 1 < len)
-//        		left ++;
-//        	right = left;
-//        	//Initialize the right to the last character of the individual word
-//        	while (right + 1 < len && sb.charAt(right + 1) != ' ')
-//        		right ++;
-//        	
-//        	//To prevent losing data of left and right, we use another 2 pointers
-//        	int swapl = left, swapr = right;
-//        	//The limit position where the swapl pointer should stop at
-//        	int limit = (right + left + 1) / 2;
-//        	//Reverse the characters within the individual word
-//        	while (swapl < limit) {
-//        		char temp = sb.charAt(swapl);
-//        		sb.setCharAt(swapl ++ , sb.charAt(swapr) );
-//        		sb.setCharAt(swapr -- , temp);
-//        	}
-//        	//Set the left pointer to the position of last character of current individual word + 1, therefore it will search for the
-//        	//next word
-//        	left = right + 1;
-//        }
-//        
-//        int cursor = 0;
-//        //Reduce the spaces in between so that each word only separated by one space only
-//        for (int i = 0; i < len; i ++ ) {
-//        	if (sb.charAt(i) == ' ' && sb.charAt(cursor - 1) == ' ')
-//        		continue;
-//        	sb.setCharAt(cursor, sb.charAt(i) );
-//        	cursor ++;
-//        }
-//        //Since all the words are trimmed of extra spaces, the rest right part of string shall be emptied
-//        while (cursor < len) {
-//        	sb.setCharAt(cursor ++ , ' ');
-//        }
-//        
-//        //Trim the returned string so that it doesn't contain trailing spaces due to removal of inter spaces
-//        return sb.toString().trim();
-//        
-//    }
-	
-	public static String reverseWords(String s) {
+	// Direct solution using Split and Joining using StringBuilder
+	public String reverseWordsNaive(String s) {
 		StringBuilder sb = new StringBuilder();
+		String[] tokens = s.split(" +");
 		
-		int right = s.length() - 1, left = right;
-		
-		while (right >= 0) {
-			while ( s.charAt(right) == ' ' && right - 1 >= 0 )
-				right --;
-			
-			if (right < 0) break;
-			left = right;
-			
-			while ( left - 1 >= 0 && s.charAt(left - 1) != ' ' )
-				left --;
-			
-			sb.append( s.substring(left, right + 1) + " " );
-			
-			right = left - 1;
+		for (int i = tokens.length - 1; i >= 0; --i) {
+			if (tokens[i].length() == 0) continue;
+			if (sb.length() != 0) sb.append(' ');	// Contains previous words. Append a space
+			sb.append( tokens[i] );
 		}
-		
-		return sb.toString().trim();
+		return sb.toString();
 	}
 	
-	public static void main(String[]args) {
-		String str = "a good     example Nigga! Fly             ";
-		System.out.println(reverseWords(str) );
+	// Two pointer from backwards. Eliminates split() function
+	public static String reverseWords(String s) {
+		final int len = s.length();
+		StringBuilder sb = new StringBuilder();
+		
+		for (int r = len-1; r >= 0; --r ) {
+			if ( s.charAt(r) == ' ') continue;
+			
+			int l = r;
+			while ( l >= 0 && s.charAt(l) != ' ') --l;
+			
+			// Append space if sb contains previous words
+			if (sb.length() != 0) sb.append(' ');
+			
+			// Append the word to sb.
+			for (int i = l+1; i <= r; ++i) sb.append( s.charAt(i) );
+			
+			r = l;
+		}
+		return sb.toString();
 	}
 	
 }
