@@ -1,10 +1,11 @@
 package Medium;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 
 //https://leetcode.com/problems/rotting-oranges/
-
 /*
  * 	This is a BFS problem. Since it involves turn-taking, and finding out how many turns to rot the whole orange, each turn
  * 	is considered one 'round' of BFS
@@ -18,71 +19,56 @@ import java.util.Queue;
 public class Rotting_Oranges {
 	
 	public int orangesRotting(int[][] grid) {
-		int r = grid.length;
-		int c = grid[0].length;
-		
-		int countRotten = 0;
-		int countFull = 0;
-		
-		Queue<Integer> a = new LinkedList<>();
-        Queue<Integer> b = new LinkedList<>();
-		
-		for (int row = 0; row < r; row ++ ) {
-			for (int col = 0; col < c; col ++ ) {
-				int org = grid[row][col];
-				if (org > 0) {
-					countFull ++;
-					if (org == 2) {
-						countRotten ++;
-						a.offer(row);
-						b.offer(col);
-					}
-				}
-			}
-		}
-		
-		int time = 0;
-		
-		while (countRotten < countFull && !a.isEmpty() ) {
-			int awaiting = a.size();
-			
-			for (int i = 0; i < awaiting; i ++ ) {
-				int xpos = a.poll();
-				int ypos = b.poll();
-				
-				if (pollute(grid, xpos-1, ypos, r, c) ) {
-					countRotten++;
-					a.offer(xpos-1); b.offer(ypos);
-				}
-				if (pollute(grid, xpos+1, ypos, r, c) ) {
-					countRotten++;
-					a.offer(xpos+1); b.offer(ypos);
-				}
-				if (pollute(grid, xpos, ypos-1, r, c) ) {
-					countRotten++;
-					a.offer(xpos); b.offer(ypos-1);
-				}
-				if (pollute(grid, xpos, ypos+1, r, c) ) {
-					countRotten++;
-					a.offer(xpos); b.offer(ypos+1);
-				}
-			}
-			time++;
-		}
-		
-		if (countRotten < countFull) return -1;
-		return time;
+		final int r = grid.length;
+        final int c = grid[0].length;
+
+        int rounds = 0;
+        int fresh = 0;
+        Deque<int[]> rotten = new ArrayDeque<>();
+
+        // Initial scan -> get fresh oranges and rotten ones
+        for (int i = 0; i < r; ++i) {
+            for (int j = 0; j < c; ++j) {
+                if (grid[i][j] == 1) ++fresh;
+                else if (grid[i][j] == 2) rotten.addLast( new int[]{ i, j } );
+            }
+        }
+
+        // BFS
+        while (fresh != 0 && rotten.size() != 0) {
+            ++rounds;
+
+            for (int i = rotten.size(); i != 0; --i) {
+                int[] rot = rotten.pollFirst();
+
+                // Up
+                if (rot[0] != 0 && grid[rot[0] - 1][rot[1]] == 1) {
+                    --fresh;
+                    grid[rot[0] - 1][rot[1]] = 2;
+                    rotten.addLast( new int[]{ rot[0] - 1, rot[1] });
+                }
+                // Down
+                if (rot[0] != r - 1 && grid[rot[0] + 1][rot[1]] == 1) {
+                    --fresh;
+                    grid[rot[0] + 1][rot[1]] = 2;
+                    rotten.addLast( new int[]{ rot[0] + 1, rot[1] } );
+                }
+                // Left
+                if (rot[1] != 0 && grid[rot[0]][rot[1] - 1] == 1) {
+                    --fresh;
+                    grid[rot[0]][rot[1] - 1] = 2;
+                    rotten.addLast( new int[]{ rot[0], rot[1] - 1 });
+                }
+                // Right
+                if (rot[1] != c - 1 && grid[rot[0]][rot[1] + 1] == 1) {
+                    --fresh;
+                    grid[rot[0]][rot[1] + 1] = 2;
+                    rotten.addLast( new int[]{ rot[0], rot[1] + 1 });
+                }
+            }
+        }
+
+        return fresh != 0? -1: rounds;
     }
-	
-	//	Attempts to pollute this grid. Returns true if it is polluted
-	private static boolean pollute(int[][] grid, int x, int y, int a, int b) {
-		if (x < 0 || x >= a || y < 0 || y >= b ) return false;
-		
-		if (grid[x][y] == 1) {
-			grid[x][y] = 2;
-			return true;
-		}
-		return false;
-	}
 
 }
