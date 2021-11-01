@@ -5,13 +5,35 @@ import java.util.LinkedList;
 //https://leetcode.com/problems/surrounded-regions/
 
 /*
- * 	Notice any O is not surrounded by X if it connects to any other O (or itself) which is located at border. Therefore we can just initiate searching
- * 	from the border to find any O's, and any O connected to it must not be surrounded and shall be converted to X. This is a DFS or BFS problem.
- * 	
- * 	To save space, instead of using another structure to store if a O is need to be converted or not, we can just mark the excluded O with another
- * 	character like 'Z' in this case. Later when we iterate it over again, we would make all cells to contain 'X' except those with 'Z', which should
- * 	be changed back to 'O'
+ * 	This is a DFS/BFS problem.
  * 
+ * 	Any 'O' that is not at the boundary itself, and does not connect to any 'O' located at boundary, will be converted to 'X'
+ * 	at the end.
+ * 	Therefore, the objective is to identify for every 'O' in the board, is it connected to any 'O' at boundary (or it is at
+ * 	boundary itself?)
+ * 
+ * 	We can approach this in 2 ways:
+ *	1.	Once found a 'O' in the matrix, we perform dfs/bfs to locate all 'O' connected to it, then determine if it is connected
+ *		to 'O' at boundary. If it does, ignore the group. If it does not, then convert all of them into 'X'
+ *
+ *	2. 	Instead of finding out a group is connected to 'O' at boundary or not, we actively ELIMINATE those groups that are
+ *		indeed connected to 'O' at boundary.
+ *
+ *	
+ *	Method 2 is much more easier and readable to implement:
+ *		- Iterate through first column, first row, last column and last row.
+ *		- If it contains a 'O':
+ *			- Mark it as some arbitrary character, like '!' to indicate that this 'O' is connected to boundary (Not convertable)
+ *			- DFS/BFS on its 4 sides to look for more 'O' to eliminate.
+ *
+ *		- Once finished, the board will have 'X', 'O' and '!'.
+ *			'!' is the original 'O' but is connected to boundary
+ *			'O' is the ones that are not connected to any 'O' at boundary
+ *			'X'
+ *
+ *		- Run a final iteration through the whole board:
+ *			- Convert '!' to 'O'
+ *			- Convert 'O' to 'X'
  */
 
 public class Surrounded_Regions {
