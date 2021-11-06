@@ -8,20 +8,17 @@ import java.util.Arrays;
 /*
  * 	The question requires solving it in O(N) time and O(1) space complexity.
  * 
- * 	If O(n^2) solution is permitted, we could do three pointers, one left, one right and one reset pointer. The left pointer will start
- * 	from the reset pointer, which initially at head of array. The right pointer start at the end.
+ * 	There are several easier solutions available:
+ * 	>	Perform sorting and check
+ * 	>	Using HashSet/ HashMap
+ * 	>	Brute force O(N^2) time
  * 
- * 	While not matching, move the left pointer forward. If at the end left pointer collides with right pointer, then the number at the pointers
- * 	is unique. 
- * 	Else if the left pointer value is equal to right pointer's (duplicate value), swap the value of left pointer (one of duplicate) with
- * 	reset pointer, move the reset pointer one step ahead, decrement right pointer by one step (which is also duplicate), and reset the left
- * 	pointer to reset pointer.
- * 
- * 	This solution do it in-place O(1) space, but could take O(n^2) time complexity
+ * 	However, there is an ingenious way of doing it - Using properties of bit manipulation (XOR)
  * 
  * 	-----------------------------------------------------------------------------------------------------------------------
  * 
  * 	The solution to do it in O(n) time complexity is to use bit manipulation.
+ * 
  * 	Here are some of XOR bitwise operation properties:
  * 		-	Performing XOR on two numbers is like asking the difference of the two binary forms. In the resulting binary string,
  * 			1 indicates at this position, two numbers has different bits, while 0 indicates two number has the same bit at this position
@@ -36,20 +33,24 @@ import java.util.Arrays;
  *		-	All the pairs will be cancelled to 0 due to XOR-ing the same two numbers
  *		-	Since the two numbers are unique, XORing those two numbers will yield their difference in bit positions
  *
- *	Now, since IT IS GUARANTEED to have only TWO different unique numbers, we could somehow separate them into 2 groups, based on the
- *	difference in bit positions. Using only one bit's position where the two numbers are different will be enough to separate the
- *	2 unique numbers into 2 separate groups already.
- *	Therefore find the first position where the two unique numbers differ, using it as the AND mask.
+ *	Let the two unique numbers be A and B respectively.
+ *	The idea is, we have iterated once through the array to obtain the XOR of two unique numbers: A xor B.
+ *	
+ *	The resulting XOR shows which of the bits that A and B differ. If the AxorB's last bit is set (1), then A and B has
+ *	differing bits on the last bit. if AxorB's last bit is 0, that means A and B has the same last bit value.
  *
- *	By separating, we don't actually need to reorganize the array such that those pass the AND mask is at the left and those fails goes to
- *	the right.
- *	When separated, There could be pairs which are located in the same group (They have no difference in binary string). Therefore, by XORing
- *	those groups, the pairs cancel and what's left will be the unique number itself!
+ *	Then, we just require the LAST SET BIT IN AxorB, which is adequate to show the position which A and B differs.
+ *	And this is done by the neat trick of:
+ *			AxorB & -AxorB
  *
- *	Iterate through the array. If it passes the AND mask, XOR it with the 1st resulting array's value, else, XOR it with the 2nd resulting
- *	array's value.	
+ *	Eg: 
+ *			If AxorB = 0x110, then
+ *			AxorB & -AxorB = 0x010
  *
+ *	We iterate through the array once more, but this time XORing the values that indeed has the (AxorB & -AxorB) bit set
+ *	to 1. In this way, we are able to include one of A or B only, but not both.
  *
+ *	Using this, we essentially already obtained A or B. To get the other unique value, simply XOR the AxorB with A.
  */
 
 
