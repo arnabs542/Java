@@ -1,43 +1,55 @@
 package Algorithms;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /*
  * 	Selection sort is a sorting algorithm which is simple but quite inefficient. It loops n iterations which finds the index containing
- * 	minimum index each time, and swaps them with the starting index
- * 	The starting index always increment by 1 each time, narrowing down the search range
+ *  maximum element each time, and swaps them with the last element in range of unsorted elements
+ *  
+ * 	The range of sorted array increases by 1 element each time, effectively narrowing down the sort range.
  * 
+ *	Note that the reverse technique is also applicable: Find minimum element each time, and swap with the first element in range
+ *	of unsorted elements.
  */
 
 public class Selection_Sort {
 
-	public static <T extends Comparable<T>> ArrayList<T> selectSort(ArrayList<T> arr) {
+	// Generic selection sort function
+	public static <T extends Comparable<T>> List<T> selectSort(List<T> arr) {
+		final int len = arr.size();
 		
-		for (int start = 0; start < arr.size() - 1; start++ ) {
-			int min = start;
-			for (int check = start + 1; check < arr.size(); check++ ) {
-				if ( arr.get(min).compareTo(arr.get(check) ) > 0) {
-					min = check;
-				}
+		for (int i = 0; i < len; ++i) {
+			int maxIndex = 0;
+			
+			// 1 - Locate maxIndex - maximum element's index among unsorted range
+			for (int j = 0; j < len - i; ++j ) {
+				if ( arr.get(maxIndex).compareTo( arr.get(j) ) < 0)
+					maxIndex = j;
 			}
-			T temp = arr.get(start);
-			arr.set(start, arr.get(min) );
-			arr.set(min, temp);
+			
+			// 2 - Swap min element with the last element in unsorted range
+			T temp = arr.get(maxIndex);
+			arr.set(maxIndex, arr.get( len - i - 1 ) );
+			arr.set(len - i - 1, temp);
 		}
 		return arr;
 	}
+	 
 	
+	
+	
+	
+	
+	// Test cases
 	public static void main(String[]args) {
-		ArrayList<Integer> arr = new ArrayList<>();
-		arr.add(4);
-		arr.add(1);
-		arr.add(3);
-		arr.add(1);
-		arr.add(5);
-		arr.add(77);
-		arr.add(99);
-		arr.add(54);
+		List<Integer> arr = Arrays.asList(4,1,3,2,5,7,6,9,8);
+		List<Integer> arr2 = Arrays.asList(1,2,3,4,5,6,7,8,9);
+		List<Integer> arr3 = Arrays.asList(9,8,7,6,5,4,3,2,1);
+		
 		System.out.println(selectSort(arr) );
+		System.out.println(selectSort(arr2) );
+		System.out.println(selectSort(arr3) );
 	}
 	
 }

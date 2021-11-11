@@ -1,5 +1,7 @@
 package Algorithms;
 
+import java.util.Arrays;
+
 /*
  * 	Bubble sort, with the complexity O(n2), has the following workings:
  * 	Keep looping through the array, if the current element is larger compared to the next one, swap them, and keep track of the number of times
@@ -14,27 +16,45 @@ package Algorithms;
 public class Bubble_Sort {
 
 	static int[] bubbleSort(int[] arr) {
-		int numOfSwap = -1;				//Instead of using the numOfSwap, you could also use break statement
-		int lastSorted = 1;				//Optimization feature, keep track how many iteration is done, therefore on next iteration no need go till end
-		while (numOfSwap != 0) {
-			numOfSwap = 0;
-			for (int i = 0; i < arr.length - lastSorted; i ++ ) {
-				if (arr[i] > arr[i+1] ) {
-					numOfSwap ++;
-					int temp = arr[i];
-					arr[i] = arr[i+1];
-					arr[i+1] = temp;
+		
+		// Outer loop - Maximum iterations we will go is N-1 iterations. Each iteration will result in 1 element getting sorted
+		for (int i = 1; i < arr.length; ++i) {
+			boolean isSorted = true;
+			
+			for (int j = 1; j < arr.length - i + 1; ++j) {
+				// If the previous element is LARGER than current element, perform swapping
+				if (arr[j] < arr[j-1]) {
+					isSorted = false;
+					// Swap
+					int temp = arr[j];
+					arr[j] = arr[j-1];
+					arr[j-1] = temp;
 				}
 			}
-			lastSorted ++;
+			
+			// Optimization - Early termination
+			if (isSorted) {
+				System.out.printf("Early termination: Ran i = %d times\n", i);
+				return arr;
+			}
 		}
 		return arr;
 	}
 	
+	
+	
+	
+	
+	
+	// Test cases
 	public static void main(String[]args) {
 		int[] arr = bubbleSort(new int[] {7,5,4,6,2});
-		for (int i : arr) 
-			System.out.println(i);
+		int[] arr2 = bubbleSort(new int[] {9,8,7,6,5,4,3,2,1});
+		int[] arr3 = bubbleSort(new int[] {1,2,3,4,5});
+		
+		System.out.println( Arrays.toString(arr) );
+		System.out.println( Arrays.toString(arr2) );
+		System.out.println( Arrays.toString(arr3) );
 	}
 	
 	
