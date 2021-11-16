@@ -33,10 +33,12 @@ import java.util.PriorityQueue;
  *  at index (n-1, n-1). We estimate a mid value from the range, and check how many elements is smaller than the estimate mid
  *  value.
  *  
- *  Sounds easy. How does we count how many elements smaller? Start from the first row, and initialize the pointer to point
- *  at column N-1. If the element at column N-1 is greater than mid, decrease column, repeat until element at column N-1 is
- *  no longer > mid. Then, the elements in this row, from 0th column to the pointer is smaller than mid. Add that to the count.
- *  Repeat until all rows covered (We can use this approach because columns is also sorted).
+ *  Sounds easy. How does we count how many elements smaller? 
+ *  
+ *  Start from the first row, and initialize the pointer to point at column N-1. If the element at column N-1 
+ *  is greater than mid, decrease column, repeat until element at column N-1 is no longer > mid. Then, the 
+ *  elements in this row, from 0th column to the pointer is smaller than mid. Add that to the count. Repeat 
+ *  until all rows covered (We can use this approach because columns is also sorted).
  *  
  *  Time taken is O(log(maxElem-minElem) * 2N). Space is O(1), much better
  */
