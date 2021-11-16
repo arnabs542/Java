@@ -10,9 +10,9 @@ import java.util.Arrays;
  * 
  * 	The key point of Quick Sort is the partitioning algorithm. What the algorithm does is basically
  * 		>	Set a pivot element
- *		>	find the respective position of that element in the array. The respective position means the position in which 
- *			to the left, all elements are always lesser while on the right, all elements are always greater, but not necessary 
- *			sorted
+ *		>	find the respective position of that pivot in the array. The respective position of the pivot is the index i in which 
+ *			to the left, all elements are always lesser than the pivot, while on the right, all elements are always greater, but both sides 
+ *			are not necessary sorted
  *
  *	Ideally, the pivot element should be in the center of the array. Then, we basically have 1 element in its correct place already.
  *	Then, we would recurse on the left side and right side of the array, which ideally is split into 2 equal half parts.
@@ -85,7 +85,7 @@ public class Quick_Sort {
 		int i = left;
 		
 		for (int j = left; j < right; j++ ) {
-			//	Element in J is lesser, and should be placed left side as possible, where pointer I was
+			//	Element in j is lesser, and should be placed left side as possible, where pointer i is at
 			if (pivot > arr[j] ) {
 				swap(arr, i, j);
 				i++;
@@ -97,48 +97,26 @@ public class Quick_Sort {
 	
 	
 	
-	// BONUS: If you decide to use the leftmost element as the pivot, we cannot make i and j go right. The entire thinking has
-	//		  to be reversed: i and j go R to L, and when pivot is less than elem, swap and decrement i
-	// HOWEVER, THIS WAY OF PARTITIONING WILL MESS UP THE NATURAL ORDERING OF THE ARRAY: Eg: [5, 5, 1, 1, 3] with 3 as pivot.
-	private static int partitionWithPivotAsLeftmost(int[] arr, int left, int right) {
+	// BONUS: Using leftmost element as pivot.
+	// !!! HOWEVER, THIS WAY OF PARTITIONING WILL MESS UP THE RELATIVE ORDERING OF THE ARRAY !!!
+	//
+	// Eg: [ (3), 1, 1, 1, 4, 5 ] where (3) is the pivot.
+	// At the end, rightmost '1' will be swapped with pivot (3), resulting in [ 1, 1, 1, 3, 4, 5 ].
+	// Although this is correct, but the relative ordering of '1's are messed up already, the third '1' had become first now
+	private static int partitionWithLeftPivot(int[] arr, int left, int right) {
 		int pivot = arr[left];
-		int i = right;
+		// Do not touch the pivot element.
+		int i = left + 1;
 		
-		for (int j = right; j > left; j--) {
-			if (pivot < arr[j] ) {
+		for (int j = left + 1; j <= right; ++j) {
+			if ( arr[j] < pivot ) {
 				swap(arr, i, j);
-				i--;
+				++i;
 			}
 		}
-		swap(arr, left, i);
-		return i;
-	}
-	
-	
-	//	However, above method will certainly mess up the original array's ordering by swapping. Therefore, this is alternative way but
-	//	it takes more time. Becuase when it encounters a larger element, it shifts every element left until the element
-	//	reaches the end...
-	private static int partitionOtherWay2(int[] arr, int left, int right) {
-		int pivot = arr[left];
-		int i = right;
-		
-		for (int j = right; j > left; j --) {
-			if (pivot < arr[j]) {
-				int temp = arr[j];
-				int k = j;
-				while (k + 1 <= right && arr[k + 1] < pivot) {
-					arr[k] = arr[k + 1];
-					k++;
-				}
-				arr[k] = temp;
-				i--;
-			}
-		}
-		for (int l = left; l < i; l++) {
-			arr[l] = arr[l+1];
-		}
-		arr[i] = pivot;
-		return i;
+		// Because i is pointing at leftmost larger than pivot element, i-1 is one of smaller elements. 
+		swap(arr, left, i-1);
+		return i-1; 
 	}
 	
 	
@@ -166,7 +144,8 @@ public class Quick_Sort {
 	
 	
 	// UTM syllabus uses a different partitioning algorithm
-	// It uses the leftmost element mainly, but still, IT MESSES UP NATURAL ORDERING OF ELEMENTS
+	// It has major flaws - When there are duplicate elements in the array, the algorithm results in
+	// 						infinite loop.
 	private static int partitionUTM(int[] arr, int left, int right) {
 		int pivot = arr[left];
 		int l = left, r = right;
@@ -192,9 +171,15 @@ public class Quick_Sort {
 	
 	
 	public static void main(String[]args) {
-		int[] arr = {1,4,8,5,6,3,0};
-		quickSortUTM(arr);
+		int[] arr = {5,1,3,7,5,5,8,10,3};
+		quickSort(arr);
+		int[] arr2 = {9,9,9,8,8,8,7,7,7,6,6,6,5,5,5};
+		quickSort(arr2);
+		int[] arr3 = {5,15,7,2,4,1,8,10,3};
+		quickSortUTM(arr3);
 		
 		System.out.println( Arrays.toString(arr) );
+		System.out.println( Arrays.toString(arr2) );
+		System.out.println( Arrays.toString(arr3) );
 	}
 }
