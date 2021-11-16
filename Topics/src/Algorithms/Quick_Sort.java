@@ -1,5 +1,7 @@
 package Algorithms;
 
+import java.util.Arrays;
+
 /*
  * 	A QuickSort can be considered a competitor of Merge Sort, which both has the best time complexity of O(N log N)
  * 	The difference is
@@ -19,7 +21,7 @@ package Algorithms;
  *	
  *	Ideally, the recursion would go as far as O(log N) only, because the array is split into half in length each time.
  *
- *	However, in the worst case where the bad pivot is pick, and the position of pivot is at the end of array, then it will result in
+ *	However, in the worst case where the bad pivot is picked, and the position of pivot is at the end of array, then it will result in
  *	O(N) recursion stack, and in each recursion, we have to traverse N times, resulting in time complexity of O(N^2)
  *
  *	---------------------------------------------------------------------------------------------------------------------------
@@ -57,21 +59,22 @@ package Algorithms;
  */
 
 public class Quick_Sort {
-	//	Driver method
+	
 	public static void quickSort(int[] arr) {
-		quickSortRecurse(arr, 0, arr.length - 1);
+		quickSort(arr, 0, arr.length - 1);
 	}
 	
 	
-	private static void quickSortRecurse(int[] arr, int left, int right) {
+	
+	private static void quickSort(int[] arr, int left, int right) {
 		if (left >= right) return;	//	Array is size 1 or less. Do nothing
 		
 		//	Call partitioning algorithm on specific subarray range, and get the partitioned index
-		int pivot = partitionOtherWay2(arr, left, right);
+		int pivot = partition(arr, left, right);
 		
 		//	Then, recurse on left and right side around the partitioned element
-		quickSortRecurse(arr, left, pivot-1);
-		quickSortRecurse(arr, pivot+1, right);
+		quickSort(arr, left, pivot-1);
+		quickSort(arr, pivot+1, right);
 	}
 	
 	
@@ -93,16 +96,11 @@ public class Quick_Sort {
 	}
 	
 	
-	private static void swap(int[]arr, int idx1, int idx2) {
-		int temp = arr[idx1];
-		arr[idx1] = arr[idx2];
-		arr[idx2] = temp;
-	}
 	
-	
-	//BONUS: If you decide to use the leftmost element as the pivot, we cannot make i and j go right. The entire thinking has
-	//		 to be reversed: i and j go R to L, and when pivot is less than elem, swap and decrement i
-	private static int partitionOtherWay(int[] arr, int left, int right) {
+	// BONUS: If you decide to use the leftmost element as the pivot, we cannot make i and j go right. The entire thinking has
+	//		  to be reversed: i and j go R to L, and when pivot is less than elem, swap and decrement i
+	// HOWEVER, THIS WAY OF PARTITIONING WILL MESS UP THE NATURAL ORDERING OF THE ARRAY: Eg: [5, 5, 1, 1, 3] with 3 as pivot.
+	private static int partitionWithPivotAsLeftmost(int[] arr, int left, int right) {
 		int pivot = arr[left];
 		int i = right;
 		
@@ -144,4 +142,59 @@ public class Quick_Sort {
 	}
 	
 	
+	
+	
+	//=================================================
+	// To be parallel with UTM syllabus format:
+	//=================================================
+	public static void quickSortUTM(int[] arr) {
+		quickSortUTM(arr, 0, arr.length - 1);
+	}
+	
+	
+	
+	private static void quickSortUTM(int[] arr, int left, int right) {
+		if (left >= right) return;	//	Array is size 1 or less. Do nothing
+		
+		//	Call partitioning algorithm on specific subarray range, and get the partitioned index
+		int pivot = partitionUTM(arr, left, right);
+		
+		//	Then, recurse on left and right side around the partitioned element
+		quickSortUTM(arr, left, pivot-1);
+		quickSortUTM(arr, pivot+1, right);
+	}
+	
+	
+	// UTM syllabus uses a different partitioning algorithm
+	// It uses the leftmost element mainly, but still, IT MESSES UP NATURAL ORDERING OF ELEMENTS
+	private static int partitionUTM(int[] arr, int left, int right) {
+		int pivot = arr[left];
+		int l = left, r = right;
+		
+		while (l < r) {
+			while (arr[r] > pivot) --r;
+			while (arr[l] < pivot) ++l;
+			
+			if (l < r) swap(arr, l, r);			
+		}
+		// At the end, l and r pointer will both stop at pivot
+		return l;
+	}
+	
+	
+
+	//==============================================================
+	private static void swap(int[] arr, int idx1, int idx2) {
+		int temp = arr[idx1];
+		arr[idx1] = arr[idx2];
+		arr[idx2] = temp;
+	}
+	
+	
+	public static void main(String[]args) {
+		int[] arr = {1,4,8,5,6,3,0};
+		quickSortUTM(arr);
+		
+		System.out.println( Arrays.toString(arr) );
+	}
 }

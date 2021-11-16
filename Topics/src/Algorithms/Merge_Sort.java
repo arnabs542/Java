@@ -1,5 +1,7 @@
 package Algorithms;
 
+import java.util.Arrays;
+
 /*
  * 		Merge Sort uses a Divide and conquer algorithm to sort the items in an array. The concept is quite simple:
  * 		Split the array into two halves, sort them, and then combine those 2 arrays into 1 sorted array
@@ -83,9 +85,7 @@ public class Merge_Sort {
 			mergeSort(arr, temp, left, mid);
 			mergeSort(arr, temp, mid + 1, right);
 			twoWayMerge(arr, temp, left, right);
-		}	
-		else
-			return;
+		}
 	}
 	
 	private static void twoWayMerge(int[] arr, int[] temp, int left, int right) {
@@ -97,49 +97,80 @@ public class Merge_Sort {
 		while (leftPoint <= mid && rightPoint <= right) {
 			if (arr[leftPoint] <= arr[rightPoint] ) {
 				temp[index] = arr[leftPoint];
-				index ++;
 				leftPoint ++;
 			}
 			else {
 				temp[index] = arr[rightPoint];
-				index ++;
 				rightPoint ++;
 			}
+			++index;
 		}
-		
-		//OLDER, ITERATIVE WAY TO DO THIS
-		
-//		while (leftPoint <= mid) {
-//			temp[index] = arr[leftPoint];
-//			index++;
-//			leftPoint++;
-//		}
-//		while (rightPoint <= right) {
-//			temp[index] = arr[rightPoint];
-//			index++;
-//			rightPoint++;
-//		}
-//		
-//		for (int i = left; i <= right; i ++ ) {
-//			arr[i] = temp[i];
-//		}
 		
 		//USING JAVA LIBRARY METHOD arraycopy( src, srcPos, desc, descPos, length)
 		System.arraycopy( arr, leftPoint, temp, index, mid - leftPoint + 1);
 		System.arraycopy( arr, rightPoint, temp, index, right - rightPoint + 1);
 		System.arraycopy( temp, left, arr, left, right - left + 1);
-		
 	}
 	
 	
 	
+	
+	//=================================================
+	// To be parallel with UTM syllabus format:
+	//=================================================
+	static int MAX_SIZE;
+	
+	public static void mergeSortUTM(int[] arr) {
+		MAX_SIZE = arr.length;
+		mergeSortUTM(arr, 0, arr.length - 1);
+	}
+	
+	private static void mergeSortUTM(int[] arr, int left, int right) {
+		if (left < right) {
+			int mid = left + (right - left) / 2;
+			mergeSortUTM(arr, left, mid);
+			mergeSortUTM(arr, mid + 1, right);
+			twoWayMergeUTM(arr, left, mid, right);
+		}
+	}
+	
+	private static void twoWayMergeUTM(int[] arr, int left, int mid, int right) {
+		int[] temp = new int[ MAX_SIZE ];
+		int first1 = left;
+		int last1 = mid;
+		int first2 = mid + 1;
+		int last2 = right;
+		int index = first1;
+		
+		for (; (first1 <= last1) && (first2 <= last2); ++index) {
+			if (arr[first1] < arr[first2]) {
+				temp[index] = arr[first1];
+				++first1;
+			}
+			else {
+				temp[index] = arr[first2];
+				++first2;
+			}
+		}
+		
+		for (; first1 <= last1; ++first1, ++index)
+			temp[index] = arr[first1];
+		for (; first2 <= last2; ++first2, ++index)
+			temp[index] = arr[first2];
+		for (index = left; index <= right; ++index)
+			arr[index] = temp[index];
+	}
+	
+	
+	
+	
+	
+	//==========================================
 	public static void main(String[]args) {
 		int[] arr = {1,4,8,5,6,3,0};
-		mergeSort(arr);
+		mergeSortUTM(arr);
 		
-		for (int i: arr) {
-			System.out.println(i);
-		}
+		System.out.println( Arrays.toString(arr) );
 	}
 
 }
