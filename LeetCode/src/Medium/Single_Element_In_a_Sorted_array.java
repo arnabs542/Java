@@ -1,58 +1,63 @@
 package Medium;
 
 //https://leetcode.com/explore/challenge/card/may-leetcoding-challenge/535/week-2-may-8th-may-14th/3327/
-
 /*
- * 	Key: For a sorted array and each element MUST OCCUR TWICE EXCEPT ONE, we conclude that
- * 		-The array must initially be of length ODD in nature
- * 		-If the left side array is odd in length, then the right side must be even in length
+ * 	This is a binary search problem.
  * 
- * 		-For any split, EVEN left-side array, -> if the tail of left matches the head of right, means the single element is in the LEFT side
- * 												 Therefore recurse on that but need to exclude the matched element, since it is identified to
- * 												 have a pair
- * 											  -> if the tail of left doesn't match the head of right, means the single element is in the RIGHT
- * 												 side. Recurse on that
+ * 	If the array is not sorted, we could do best in O(N) time using XOR technique. However, since it is sorted, we know
+ * 	for certain all pairs occur adjacently. Therefore, we easily try to utilize binary search here. This does not have
+ * 	anything to do with sorted, just that they are adjacently paired.
+ * 
+ * 	- Firstly, the array must be odd lengthed. This is because of Length = 2(no of pairs) + 1 single element
  * 	
- * 		-For any split, ODD left-side array, -> if the tail of left matches the head of right, means the single element is in the RIGHT side
- * 												Therefore recurse on that but need to exclude the matched element
- * 											 -> if the tail of left doesn't match the head of right, means the single element is in the LEFT
- * 												side. Recurse on that
+ * 
+ * 	My intuition comes from observing an array without the single element, let's see:
+ * 	[1,1,2,2,3,3,4,4,5,5]
+ * 	At any single index i, observe:
+ * 		If i is odd, then arr[i] should equal to arr[i-1]
+ * 		If i is even, then arr[i] should equal to arr[i+1]
+ * 
+ * 	The binary search serves to narrow the search range by half, by eliminating the half part which the single element
+ * 	could not possibly be at. How to know if a single element could not possibly be in a subarray? By checking if the
+ * 	subarray satisfies the 2 condition above. That is, the subarray only consist of pairs, no single element.
+ * 
+ * 
+ * 
+ * 	Then, we come up with an algorithm:
+ * 
+ * 		If i is odd:
+ * 			If arr[i-1] == arr[i] then single element must be to the right (Left side is all pairs)
+ * 			Else single element must be to the left
+ *		If i is even:
+ *			If arr[i] == arr[i+1] then single element must be to the right (Left side is all pairs)
+ *			Else single element must be to the left
  */
 
 public class Single_Element_In_a_Sorted_array {
 	 
 	public int singleNonDuplicate(int[] nums) {
-		 return recurse(nums, 0, nums.length-1);
-	}
-	
-	public int recurse(int[] nums, int left, int right) {
-		if (left >= right) return nums[left];
-		
-		int lefttail = (left + (right - left) / 2) - 1;
-		int righthead = lefttail + 1;
-		
-		//If the left side is even in length (Right side is odd):
-		if ( (lefttail - left + 1) % 2 == 0 ) {
-			//The tail matches the head
-			if (nums[lefttail] == nums[righthead] ) {
-				return recurse(nums, left, lefttail-1);
-			}
-			//The tail doesn't matches the head
-			else {
-				return recurse(nums, righthead, right);
-			}
-		}
-		//Else if the left side is odd in length
-		else {
-			//The tail matches the head
-			if (nums[lefttail] == nums[righthead] ) {
-				return recurse(nums, righthead+1, right);
-			}
-			//The tail doesn't matches the head
-			else {
-				return recurse(nums, left, lefttail);
-			}
-		}
-		
+		final int len = nums.length;
+        int l = 0, r = len - 1;
+
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+
+            // Odd index.
+            // If previous element is same then single element > mid
+            // otherwise single element <= mid
+            if (mid % 2 == 1) {
+                if (mid != 0 && nums[mid - 1] == nums[mid]) l = mid + 1;
+                else r = mid;
+            }
+            // Even index.
+            // If next element is same then single element is > mid
+            // Otherwise the single element <= mid
+            else {
+                if (mid != len-1 && nums[mid + 1] == nums[mid]) l = mid + 1;
+                else r = mid;
+            }
+        }
+
+        return nums[l];
 	}
 }

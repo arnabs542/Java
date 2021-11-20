@@ -135,7 +135,7 @@ public class Quick_Sort {
 		if (left >= right) return;	//	Array is size 1 or less. Do nothing
 		
 		//	Call partitioning algorithm on specific subarray range, and get the partitioned index
-		int pivot = partitionUTM(arr, left, right);
+		int pivot = partitionUTMCorrected(arr, left, right);
 		
 		//	Then, recurse on left and right side around the partitioned element
 		quickSortUTM(arr, left, pivot-1);
@@ -150,14 +150,33 @@ public class Quick_Sort {
 		int pivot = arr[left];
 		int l = left, r = right;
 		
-		while (l < r) {
+		while (true) {
 			while (arr[r] > pivot) --r;
 			while (arr[l] < pivot) ++l;
 			
-			if (l < r) swap(arr, l, r);			
+			if (l < r) swap(arr, l, r);	
+			else break;
 		}
 		// At the end, l and r pointer will both stop at pivot
 		return l;
+	}
+	
+	
+	private static int partitionUTMCorrected(int[] arr, int left, int right) {
+		int pivot = arr[left];
+		int l = left + 1, r = right;
+		
+		while (true) {
+			while (l <= r && arr[l] <= pivot) ++l;
+			while (r >= l && arr[r] >= pivot) --r;
+			
+			if (l < r) swap(arr, l, r);
+			else break;
+		}
+		swap(arr, left, r);
+		
+		// At the end, l and r pointer will both stop at pivot
+		return r;
 	}
 	
 	
@@ -172,9 +191,9 @@ public class Quick_Sort {
 	
 	public static void main(String[]args) {
 		int[] arr = {5,1,3,7,5,5,8,10,3};
-		quickSort(arr);
+		quickSortUTM(arr);
 		int[] arr2 = {9,9,9,8,8,8,7,7,7,6,6,6,5,5,5};
-		quickSort(arr2);
+		quickSortUTM(arr2);
 		int[] arr3 = {5,15,7,2,4,1,8,10,3};
 		quickSortUTM(arr3);
 		
