@@ -3,7 +3,6 @@ package Medium;
 import Binary_Tree.TreeNode;
 
 //https://leetcode.com/problems/delete-node-in-a-bst/
-
 //	For introduction to deleting nodes in BST, see TOPICS -> DATA_STRUCTURES -> BINARYSEARCHTREE
 
 public class Delete_Node_In_BST {
