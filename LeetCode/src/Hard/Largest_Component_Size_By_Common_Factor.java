@@ -4,25 +4,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 //https://leetcode.com/problems/largest-component-size-by-common-factor/
-
 /*
  * 	This is a Union Find / Disjoint Set problem
  * 
  * 	First of all, the factors of a number can be find in sqrt(N) time, and including the number N itself as factor too. (1 is not counted)
  * 
- * 	We are going to have a HashMap which points from divisor to one node which has that divisor as its factor.
+ * 	Our disjoint set will be formed by a HashMap. Additionally, we have another map which points from the divisor to 
+ * 	any of the node which has that divisor as its factor.
  * 		
- * 		DIVISOR -> ONE OF NODE HAVING THIS DIVISOR AS FACTOR
- *		
+ * 	{DISJOINT SET}:		(Node)---> 	(ParentNode / RootIndicator)
+ * 	{DIVISOR MAP}: 		(Divisor)-> (One of the node which has that divisor)
  * 
- * 	Now, for every factor, it can either be:
+ * 	Now, for every factor F of N, it can either be:
  * 		>	There exists a past number M which had the same factor
  * 		>	It's the first time encountering this factor, by N
  * 
- * 	If it exists the past number M that has the same factor, then we had to union those 2 numbers together.
- * 	We will be finding the representator of the factor, and see if the representator of current node N if they are the same
- * 	If they are the same (In same Set), then do nothing (except you may want to have some optimization)
- * 	
+ * 	If it exists the past number M that has the same factor, then we had to union the 2 disjoint sets that include
+ * 	both numbers together. We will be finding the representator of the factor, and see if the representator 
+ * 	of current node N if they are already in the same set or not. If they are the same (In same set), 
+ * 	then do nothing (except you may want to have some optimization)
  */
 
 public class Largest_Component_Size_By_Common_Factor {
@@ -38,7 +38,7 @@ public class Largest_Component_Size_By_Common_Factor {
 		Map<Integer, Integer> divisorMap = new HashMap<>();
 		
 		//	The result
-		int res = Integer.MIN_VALUE;
+		int res = 1;
 		
 		
 		for (int node: A) {
@@ -86,7 +86,7 @@ public class Largest_Component_Size_By_Common_Factor {
 				int representorB1 = findRepresentor( disjoint, divisorMap.get(divisor2) );
 				int representorB2 = findRepresentor( disjoint, divisorMap.get(node) );
 				
-//				If both the representor are of the same (IN SAME SET), don't need to union them
+				//If both the representor are of the same (IN SAME SET), don't need to union them
 				if (representorB1 != representorB2 ) {
 					res = Math.max( res, union(disjoint, representorB1, representorB2 ) );
 				} 
