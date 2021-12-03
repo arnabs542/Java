@@ -16,12 +16,11 @@ package Medium;
  * 	Now we have to see how the answer relates to previously computed answer
  * 
  * 	From bottom up, we have to introduce a new element each iteration. Now, the new element can be spread into those cases:
- * 		>	Positive integer
- * 		>	Negative integer
+ * 		>	It combines with the previous maximum product subarray, which the subarray must ended with element i-1
  * 		>	Or we shall be starting a new subarray from this element
  * 
- * 	Say we got a new positive integer. Anything multiplied with positive integer will always be bigger. That's good! Just include it!
- * 	Say we know the previous maximum subarray (The DP must involve the last element as member of subarray), just multiply it
+ * 	Say we currently are having a positive integer. Anything multiplied with positive integer will always be bigger. That's good! Just include it!
+ * 	Say we know the previous maximum subarray (which ends with element at i-1), just multiply it
  * 
  * 	However, if we got a new negative integer, how would we go and find the maximum? We shall notice that negative multiply negative
  * 	will become positive, and shall be viewed as two positive integers multiplied together. Problem is, how do we know if there's a
@@ -54,54 +53,26 @@ package Medium;
  * 		else if (negative or 0)
  * 			max = max( thisNum, prevMin * thisNum)
  * 			min = min( thisNum, prevMax * thisNum)
- * 
- * 			
- * 
- * 	
  */
 
 public class Maximum_Product_Subarray {
-
-//	public int maxProduct(int[] nums) {
-//        int max = Integer.MIN_VALUE;
-//        
-//        for (int i = 0; i < nums.length; i ++ ) {
-//        	int multi = 1;
-//        	for (int j = i; j >= 0; j -- ) {
-//        		multi *= nums[j];
-//        		max = Math.max(multi, max);
-//        	}
-//        }
-//        
-//        return max;
-//    }
-	
-	
-	
 	
 	public int maxProduct(int[] nums) {
-		int res = nums[0];
-		
 		int prevMax = nums[0];
-		int prevMin = nums[0];
-		
-		for (int i = 1; i < nums.length; i ++ ) {
-			int e = nums[i];
-			if (e > 0) {
-				prevMax = Math.max(prevMax * e, e);
-				prevMin = Math.min(prevMin * e, e);
-			} else {
-				int temp = prevMax;
-				prevMax = Math.max(prevMin * e, e);
-				prevMin = Math.min(temp * e, e);
-			}
-			
-			System.out.println("Max: " + prevMax + " Min: " + prevMin);
-			
-			res = Math.max(prevMax, res);
-		}
-		
-		return res;
+        int prevMin = nums[0];
+        int res = nums[0];
+
+        for (int i = 1; i < nums.length; ++i) {
+            int n = nums[i];
+            int newMax = Math.max(n, Math.max(prevMax * n, prevMin * n));
+            int newMin = Math.min(n, Math.min(prevMax * n, prevMin * n));
+            prevMax = newMax;
+            prevMin = newMin;
+
+            res = Math.max(prevMax, res);
+        }
+
+        return res;
 	}
 	
 }
