@@ -10,9 +10,16 @@ import java.util.Queue;
 /*
  * 	This is a question which is very related to the data structure Trie.
  * 
- * 	The basic intuition is that we will be constructing a trie out of the words provided. Then, each query will consists of a single
- * 	letter only. We have to check if we combine all the letters provided in previous queries, will form a valid word in the
- * 	trie.
+ * 	Given an array of strings 'words' (Think of it as possible candidate of suffixes), and we will be provided with a
+ * 	string character by character via query(). We have to return true whenever the string s formed by character added 
+ * 	to query() will have a existing suffix in 'words'.
+ * 	
+ * 	-----------------------------------------------------------------------------------------
+ * 
+ * 	The basic intuition is that we will be constructing a trie out of the 'words' array. Then, each query will consist 
+ * 	of a single letter only. We have to check if we combine all the letters provided in previous queries, will form a 
+ * 	valid word in the trie.
+ * 
  * 
  * 	The quick solution is that we can keep a Queue of pointers pointing to nodes in the Trie.
  * 	Every time we receive a query, we have to check 2 things:
@@ -26,15 +33,26 @@ import java.util.Queue;
  *		>	Aside from checking from the queue, we also have to start from the root everytime. Push the root node into the queue
  *			for every query too.
  *
+ *	Example: words = ["abcdefg"]
+ * 			queries = 'a', 'b', 'c', 'd', 'e'
+ * 
+ * 	Since the word "abcdefg" is constructed as trie, by the time we are given query('e'), we should have a set of pointers
+ * 	pointing to nodes in trie:
+ * 			pointers = { "a", "ab", "abc", "abcd", "abcde" }
+ *
+ *
  *	The problem with this solution is that the pointers may keep stacking up in the queue, which is both slow, and space consuming.
  *	
  *	==============================================================================================================
  *
- *	Another better solution is, we will be making a reversed Trie, each string is stored in reverse order. We will be traversing
- *	the Trie from the last character provided
+ *	Instead of checking if every possible word of string s formed by queries forms a valid word in the trie, we 
+ *	can reverse everything - String s and the trie. Then, we essentially only have to query the trie for valid prefix.
+ *
+ * 	Construct the trie in reverse (For each word in words, start from back to front). We will have a suffix trie.
+ * 	Then, for each query, we store it as front of s instead of back, so we form an reversed string. 
  *
  *	We will store the past query letters in a Linked List like data structure, which we will always append the newest introduced
- *	character at the head of the linked list.
+ *	character at the head of the linked list (So the string is reversed).
  *	With linked list, we can detect if the linked list had exceeded the maximum length of the string in the Trie, we will remove the
  *	tail of the linked list. Both inserting and removing are in Constant time
  *
@@ -53,65 +71,7 @@ import java.util.Queue;
 
 
 
-//public class StreamChecker {
-//	
-//	private class Node {
-//		boolean isWord;
-//		Node[] next;
-//		public Node() {
-//			isWord = false;
-//			next = new Node[26];
-//		}
-//	}
-//	private Node root;
-//	private Queue<Node> toQuery;
-//	
-//	public StreamChecker(String[] words) {
-//		root = new Node();
-//		toQuery = new LinkedList<>();
-//		toQuery.offer(root);
-//		
-//		for (String s: words) {
-//			Node curr = root;
-//			
-//			for (char c: s.toCharArray() ) {
-//				if (curr.next[c - 'a'] == null)
-//					curr.next[c - 'a'] = new Node();
-//				curr = curr.next[c - 'a'];
-//			}
-//			curr.isWord = true;
-//		}
-//		
-//	}
-//	
-//    public boolean query(char letter) {
-//    	boolean flag = false;
-//    	
-//    	int size = toQuery.size();
-//    	
-//    	for (int i = 0; i < size; i ++ ) {
-//    		Node polled = toQuery.poll();
-//    		Node next = polled.next[letter - 'a'];
-//    		if (next != null) {
-//    			if (next.isWord)
-//    				flag = true;
-//    			toQuery.offer(next);
-//    		}
-//    	}
-//    	
-//    	//Next checking also need to do from root
-//    	toQuery.offer(root);
-//    	return flag;
-//    	
-//    }
-//
-//	
-//}
-
-
-
-
-public class StreamChecker {
+public class Stream_of_Characters {
 	
 	private class Node {
 		boolean isWord;
@@ -121,11 +81,13 @@ public class StreamChecker {
 			next = new Node[26];
 		}
 	}
+	
+	
 	private Node root;
 	int limit = 0;
 	List<Character> wordList;
 	
-	public StreamChecker(String[] words) {
+	public Stream_of_Characters(String[] words) {
 		root = new Node();
 		wordList = new LinkedList<>();
 		
@@ -143,6 +105,8 @@ public class StreamChecker {
 			curr.isWord = true;
 		}
 	}
+	
+	
 	
     public boolean query(char letter) {
     
