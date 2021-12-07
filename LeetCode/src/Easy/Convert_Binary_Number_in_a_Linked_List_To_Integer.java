@@ -12,12 +12,13 @@ package Easy;
  * 	>	Use leftshift operator, which basically shift all bits to left by one
  * 	>	Use *2 every time we traverse the node.
  * 
+ * 	You should know that left shifting a binary number also multiplies by 2.
+ * 	Eg: 101 ===> 1010   (5 ==> 10)
  */
 
 public class Convert_Binary_Number_in_a_Linked_List_To_Integer {
 	
 	//	Bit manipulation Iterative method
-	
 	public int getDecimalValue(ListNode head) {
         int res = 0;
         while (head != null) {
@@ -29,8 +30,9 @@ public class Convert_Binary_Number_in_a_Linked_List_To_Integer {
         return res;
     }
 	
-	//	Recursive Method
 	
+	
+	//	Recursive Method - Done by passing value into next recursion call, and finally returning the result
 	public int getDecimalValueRecursion(ListNode head) {
 		return getDecimalValueRecursive(head, 0);
 	}
@@ -43,8 +45,11 @@ public class Convert_Binary_Number_in_a_Linked_List_To_Integer {
         return getDecimalValueRecursive(head.next, val);
     }
 	
-	//	Math method
 	
+	
+	
+	
+	//	Math method
 	public int getDecimalValueMath(ListNode head) {
 		int res = 0;
 		while ( head!= null) {
