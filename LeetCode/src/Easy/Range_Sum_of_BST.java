@@ -1,5 +1,7 @@
 package Easy;
 
+import Binary_Tree.TreeNode;
+
 import java.util.LinkedList;
 import java.util.Stack;
 
@@ -24,39 +26,23 @@ import java.util.Stack;
 */
 
 public class Range_Sum_of_BST {
-
-	public class TreeNode {
-		int val;
-		TreeNode left;
-		TreeNode right;
-
-		TreeNode() {
-		}
-
-		TreeNode(int val) {
-			this.val = val;
-		}
-
-		TreeNode(int val, TreeNode left, TreeNode right) {
-			this.val = val;
-			this.left = left;
-			this.right = right;
-		}
-	}
 	
 	public int rangeSumBST(TreeNode root, int L, int R) {
 		if (root == null) return 0;
 		
-		if (root.val >= R) {
-			return (root.val == R)? root.val: 0 + rangeSumBST(root.left, L, R);
-		}
-		else if (root.val <= L) {
-			return (root.val == L)? root.val: 0 + rangeSumBST(root.right, L, R);
-		}
-		else {
-			return root.val + rangeSumBST(root.right, L, R) + rangeSumBST(root.left, L, R);
-		}
+		// Whether the current node is included in calculation
+		int sum = (L <= root.val && root.val <= R?  root.val: 0);
+		
+		// Node value is less than left boundary - Only search right
+		if (root.val <= L) return sum + rangeSumBST(root.right, L, R);
+		
+		// Node value is greater than right boundary - only search left
+		if (root.val >= R) return sum + rangeSumBST(root.left, L, R);
+		
+		// Intermediate - Search both
+		return sum + rangeSumBST(root.left, L, R) + rangeSumBST(root.right, L, R);
 	}
+	
 	
 	public int rangeSumBSTStack(TreeNode root, int L, int R) {
 		Stack<TreeNode> stack = new Stack<>();
@@ -65,20 +51,16 @@ public class Range_Sum_of_BST {
 		
 		while (!stack.isEmpty() ) {
 			TreeNode node = stack.pop();
-			if (node == null) continue;
 			
-			if (node.val >= R) {
-				sum += (node.val == R)? R: 0;
+			if (L <= node.val && node.val <= R) sum += node.val;
+			
+			if (node.val >= R && node.left != null)
 				stack.push(node.left);
-			}
-			else if (node.val <= L) {
-				sum += (node.val == L)? L: 0;
+			else if (node.val <= L && node.right != null)
 				stack.push(node.right);
-			}
 			else {
-				sum += node.val;
-				stack.push(node.right);
-				stack.push(node.left);
+				if (node.right != null) stack.push(node.right);
+				if (node.left != null) stack.push(node.left);
 			}
 		}
 		return sum;
@@ -91,20 +73,16 @@ public class Range_Sum_of_BST {
 		
 		while (!list.isEmpty() ) {
 			TreeNode node = list.poll();
-			if (node == null) continue;
 			
-			if (node.val >= R) {
-				sum += (node.val == R)? R: 0;
+			if (L <= node.val && node.val <= R) sum += node.val;
+			
+			if (node.val >= R && node.left != null)
 				list.add(node.left);
-			}
-			else if (node.val <= L) {
-				sum += (node.val == L)? L: 0;
+			else if (node.val <= L && node.right != null)
 				list.add(node.right);
-			}
 			else {
-				sum += node.val;
-				list.add(node.left);
-				list.add(node.right);
+				if (node.left != null) list.add(node.left);
+				if (node.right != null) list.add(node.right);
 			}
 		}
 		return sum;
