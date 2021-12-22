@@ -1,17 +1,23 @@
 package Medium;
+import Linked_List.ListNode;
 
+//https://leetcode.com/problems/reorder-list/
 /*
  * 	A Linked List problem.
  * 
  * 	My idea is, first I have to find the half part of the linked list. With this I used the O(N) method to find the linked list
- * 	length and find its middle.
- * 	(	For optimization, it could be done using fast and slow two pointers method, just for finding middle node)
+ * 	middle node using two pointers (Fast & slow pointer)
+ * 
+ * 	At the end, the middle pointer will point at the middle node, just before the other half of the linked list
+ *  The one in bracket is the node selected as middle node after two pointers method
+ * 	Eg: 1-2-(3)-4-5
+ * 	Eg: 1-(2)-3-4
  * 
  * 	Then, cut the other half from the first half, then reverse the right half, so that we could insert it accordingly
  * 
  * 		1 -> 2 -> 3 -> 4 -> 5		(Example)
- * 
- * 		1 -> 2 		3 <- 4 <- 5
+ * 				To
+ * 		1 -> 2 	 |	3 <- 4 <- 5
  * 
  * 	Reversing is done by keeping track of previous node, and set the node's next to previous node
  * 	Be careful! Do not form a cycle in this process. Make sure that the node center's previous (Node 2 in example) next is null,
@@ -36,61 +42,46 @@ package Medium;
 
 public class Reorder_List {
 	
-	class ListNode {
-		int val;
-		ListNode next;
-		ListNode() {}
-		ListNode(int val) { this.val = val; }
-		ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-	}
-	
 	public void reorderList(ListNode head) {
-		if (head == null) return;
-		
-		int half = findLen(head) / 2;
-		if (half == 0) return;
-		
-		ListNode right = reverseHalf(half, head);
-		
-		//	While there is a node to attach next
-		while (right != null) {
-			ListNode next = head.next;
-			head.next = right;
-			head = right;
-			right = next;
+		// Step 1 - Get middle node
+		ListNode slow = head;
+		ListNode fast = head;
+		while (fast.next != null && fast.next.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
 		}
+
 		
-	}
-	
-	private int findLen(ListNode head) {
-		int count = 0;
-		while (head != null) {
-			count ++;
-			head = head.next;
+		// Step 2 - Make the middle node's next point to null (Because it will be the end of left half of linked list)
+		fast = slow.next;
+		slow.next = null;
+		slow = fast;
+
+
+		// Step 3 - Reverse the right half of the linked list
+		ListNode reversedHead = null;
+		while (slow != null) {
+			ListNode nxt = slow.next;
+			slow.next = reversedHead;
+			reversedHead = slow;
+			slow = nxt;
 		}
-		return count;
-	}
-	
-	//	Will return the head of the right side reversed node. This:
-	//		1 -> 2 -> 3				4 <- 5
-	//	Will return node 5 in this case
-	private ListNode reverseHalf(int half, ListNode head) {
-		ListNode prev = null;
-		for (int idx = 0; idx < half; idx ++ ) {
-			prev = head;
-			head = head.next;
+
+
+		// Step 4 - Interconnect normal and reversed linked list
+		ListNode dummy = new ListNode();
+		for (ListNode tail = dummy; head != null || reversedHead != null; ) {
+			if (head != null) {
+				tail.next = head;
+				tail = head;
+				head = head.next;
+			}
+			if (reversedHead != null) {
+				tail.next = reversedHead;
+				tail = reversedHead;
+				reversedHead = reversedHead.next;
+			}
 		}
-		prev.next = null;
-		prev = null;
-		
-		while (head != null) {
-			ListNode next = head.next;
-			head.next = prev;
-			prev = head;
-			head = next;
-		}
-		
-		return prev;
 	}
 
 }
